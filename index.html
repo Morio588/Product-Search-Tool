@@ -27,11 +27,17 @@
 <body>
   <div class="container">
     <h1>產品查找工具</h1>
+    <hr class="divider">
+    <p class="subtitle">僅限 iStore 內部員工使用 ｜ Morio Present</p>
+
     <div class="controls">
       <input type="text" id="searchInput" placeholder="輸入產品名稱、代碼或分類關鍵字">
-      <label for="fileInput" class="upload-label">上傳新的 CSV 檔案</label>
-      <input type="file" id="fileInput" accept=".csv" style="display:none;">
+      <label for="fileInput" class="upload-label">
+        上傳新的 CSV 檔案
+      </label>
+      <input type="file" id="fileInput" accept=".csv">
     </div>
+
     <div class="table-container">
       <table id="resultTable">
         <thead>
@@ -49,6 +55,32 @@
       </table>
     </div>
   </div>
+</body>
+
+<style>
+  h1 {
+    font-size: 32px;     /* 字體放大 */
+    font-weight: bold;   /* 粗體 */
+    text-align: center;  /* 置中 */
+    margin-bottom: 10px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #eee; /* 淡灰色線 */
+    width: 60%;                /* 不要滿版，稍微收斂 */
+    margin: 6px auto;         /* 上下留白、置中 */
+  }
+
+  .subtitle {
+    font-size: 10px;           /* 小字 */
+    color: #aaa;               /* 淺灰色 */
+    margin-top: -2px;          /* 緊貼分隔線 */
+    margin-bottom: 20px;
+    text-align: center;        /* 置中 */
+  }
+</style>
+  
   <script>
     let data = [];
     let originalData = [];
