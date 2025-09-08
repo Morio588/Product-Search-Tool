@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>產品查找工具</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; margin: 20px; background-color: #f0f4f8; color: #333; }
+    .container { max-width: 1200px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h1 { color: #1e3a5f; text-align: center; margin-bottom: 20px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center; }
+    #searchInput { flex-grow: 1; max-width: 400px; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; transition: all 0.2s; }
+    #searchInput:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+    .upload-label { padding: 12px 24px; border: 2px dashed #9ca3af; border-radius: 8px; font-size: 16px; cursor: pointer; color: #4b5563; text-align: center; transition: border-color 0.2s, background-color 0.2s; }
+    .upload-label:hover { border-color: #3b82f6; background-color: #e5f1ff; }
+    .table-container { overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
+    table { border-collapse: collapse; width: 100%; min-width: 800px; }
+    th, td { border: 1px solid #e5e7eb; padding: 12px; text-align: left; font-size: 14px; }
+    th { background-color: #f9fafb; color: #4b5563; font-weight: 600; position: sticky; top: 0; z-index: 1; }
+    tbody tr:nth-child(even) { background-color: #f9fafb; }
+    tbody tr:hover { background-color: #f3f4f6; }
+    .no-results { text-align: center; padding: 20px; color: #6b7280; }
+    @media (max-width: 768px) { .controls { flex-direction: column; align-items: stretch; } #searchInput { max-width: none; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>產品查找工具</h1>
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="輸入產品名稱、代碼或分類關鍵字">
+      <label for="fileInput" class="upload-label">上傳新的 CSV 檔案</label>
+      <input type="file" id="fileInput" accept=".csv" style="display:none;">
+    </div>
+    <div class="table-container">
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>型號</th>
+            <th>Code</th>
+            <th>產品名稱</th>
+            <th>大分類</th>
+            <th>中分類</th>
+            <th>小分類</th>
+            <th>Remark</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    let data = [];
+    let originalData = [];
+
+    const csvData = `manufacture_style,Code,product_name,大分類,中分類,小分類,Remark
+MC747TA/A,0024810094,45W Magsafe Power MC747,Accy,#Power Adapter,Magsafe,正常品
+MD564FE/A,0024838073,APPLE USB SUPERDRIVE MD564,Accy,*CPU Accy,Super Drive,正常品
+MD592TA/A,0024838077,45W Magsafe 2 Power MD592,Accy,#Power Adapter,Magsafe,正常品`;
+
+    function parseCSV(csv) {
+      const lines = csv.trim().split('\n');
+      const headers = lines.shift().split(',');
+      return lines.map(line => {
+        const values = line.split(',');
+        return headers.reduce((obj, header, i) => {
+          obj[header] = values[i];
+          return obj;
+        }, {});
+      });
+    }
+
+    function renderTable(filteredData) {
+      const tbody = document.querySelector('#resultTable tbody');
+      tbody.innerHTML = '';
+      if (filteredData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="no-results">沒有符合的資料</td></tr>';
+        return;
+      }
+      filteredData.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.manufacture_style || ''}</td>
+          <td>${row.Code || ''}</td>
+          <td>${row.product_name || ''}</td>
+          <td>${row.大分類 || ''}</td>
+          <td>${row.中分類 || ''}</td>
+          <td>${row.小分類 || ''}</td>
+          <td>${row.Remark || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterData(keyword) {
+      const lowerKeyword = keyword.toLowerCase();
+      return originalData.filter(row =>
+        Object.values(row).some(value =>
+          value && value.toLowerCase().includes(lowerKeyword)
+        )
+      );
+    }
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const keyword = e.target.value;
+      const filtered = filterData(keyword);
+      renderTable(filtered);
+    });
+
+    document.getElementById('fileInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        originalData = parseCSV(event.target.result);
+        renderTable(originalData);
+      };
+      reader.readAsText(file);
+    });
+
+    originalData = parseCSV(csvData);
+    renderTable(originalData);
+  </script>
+</body>
+</html>
