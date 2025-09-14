@@ -163,7 +163,7 @@
           <td>${row[columnMapping['大分類']] || ''}</td>
           <td>${row[columnMapping['中分類']] || ''}</td>
           <td>${row[columnMapping['小分類']] || ''}</td>
-          <td>${row[columnMapping['Remark']] || ''}</td>
+          <td>${row[columnMapping['Remark']] || row['remark'] || ''}</td>
         `;
         tbody.appendChild(tr);
       });
