@@ -86,16 +86,22 @@
     let originalData = [];
 
     function parseCSV(csv) {
-      const lines = csv.trim().split('\n');
-      const headers = lines.shift().split(',');
-      return lines.map(line => {
-        const values = line.split(',');
-        return headers.reduce((obj, header, i) => {
-          obj[header] = values[i];
-          return obj;
-        }, {});
-      });
-    }
+    const lines = csv.trim().split('\n');
+    const headers = lines.shift().split(',');
+
+    return lines.map(line => {
+        const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g); // 支援逗號包在引號內
+        const obj = {};
+        headers.forEach((header, i) => {
+            if (!values) return;
+            let value = values[i] || '';
+            value = value.replace(/^"(.*)"$/, '$1'); // 移除引號
+            obj[header] = value;
+        });
+        return obj;
+    });
+}
+
 
     function renderTable(filteredData) {
       const tbody = document.querySelector('#resultTable tbody');
