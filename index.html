@@ -12,11 +12,9 @@
     h1 { color: #1e3a5f; text-align: center; margin-bottom: 20px; font-size: 32px; font-weight: bold; }
     .divider { border: none; border-top: 1px solid #eee; width: 60%; margin: 6px auto; }
     .subtitle { font-size: 10px; color: #aaa; margin-top: -2px; margin-bottom: 20px; text-align: center; }
-    .controls { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center; }
-    #searchInput { flex-grow: 1; max-width: 400px; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; transition: all 0.2s; }
+    .controls { display: flex; justify-content: center; margin-bottom: 20px; }
+    #searchInput { max-width: 400px; width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; transition: all 0.2s; }
     #searchInput:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
-    .upload-label { padding: 12px 24px; border: 2px dashed #9ca3af; border-radius: 8px; font-size: 16px; cursor: pointer; color: #4b5563; text-align: center; transition: border-color 0.2s, background-color 0.2s; }
-    .upload-label:hover { border-color: #3b82f6; background-color: #e5f1ff; }
     .table-container { overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
     table { border-collapse: collapse; width: 100%; min-width: 800px; }
     th, td { border: 1px solid #e5e7eb; padding: 12px; text-align: left; font-size: 14px; }
@@ -24,7 +22,6 @@
     tbody tr:nth-child(even) { background-color: #f9fafb; }
     tbody tr:hover { background-color: #f3f4f6; }
     .no-results { text-align: center; padding: 20px; color: #6b7280; }
-    .debug-info { background: #f3f4f6; padding: 10px; margin: 10px 0; border-radius: 8px; font-size: 12px; color: #4b5563; }
     .error { background: #fef2f2; color: #dc2626; padding: 10px; margin: 10px 0; border-radius: 8px; }
     @media (max-width: 768px) { .controls { flex-direction: column; align-items: stretch; } #searchInput { max-width: none; } }
   </style>
@@ -37,13 +34,8 @@
 
     <div class="controls">
       <input type="text" id="searchInput" placeholder="輸入產品名稱、代碼或分類關鍵字">
-      <label for="fileInput" class="upload-label">
-        上傳新的 CSV 檔案
-      </label>
-      <input type="file" id="fileInput" accept=".csv" style="display: none;">
     </div>
 
-    <div id="debugInfo" class="debug-info" style="display: none;"></div>
     <div id="errorInfo" class="error" style="display: none;"></div>
 
     <div class="table-container">
@@ -80,12 +72,6 @@
       'Remark': ['remark', 'Remark', '備註', '說明', 'note', 'Note', 'comment']
     };
 
-    function showDebugInfo(info) {
-      const debugDiv = document.getElementById('debugInfo');
-      debugDiv.innerHTML = info;
-      debugDiv.style.display = 'block';
-    }
-
     function showError(error) {
       const errorDiv = document.getElementById('errorInfo');
       errorDiv.innerHTML = error;
@@ -93,14 +79,12 @@
     }
 
     function hideMessages() {
-      document.getElementById('debugInfo').style.display = 'none';
       document.getElementById('errorInfo').style.display = 'none';
     }
 
     // 建立欄位對應關係
     function createColumnMapping(headers) {
       columnMapping = {};
-      const mappingResults = [];
       
       for (const [targetField, possibleNames] of Object.entries(fieldMappings)) {
         const foundHeader = possibleNames.find(name => 
@@ -110,17 +94,8 @@
         if (foundHeader) {
           const actualHeader = headers.find(header => header.trim() === foundHeader);
           columnMapping[targetField] = actualHeader;
-          mappingResults.push(`${targetField} → ${actualHeader}`);
-        } else {
-          mappingResults.push(`${targetField} → 未找到`);
         }
       }
-      
-      showDebugInfo(`
-        <strong>CSV 欄位對應結果:</strong><br>
-        ${mappingResults.join('<br>')}<br><br>
-        <strong>CSV 原始欄位:</strong> ${headers.join(', ')}
-      `);
       
       return Object.keys(columnMapping).length > 0;
     }
@@ -128,15 +103,34 @@
     // 使用 PapaParse 解析 CSV
     function parseCSVWithPapa(csvText) {
       return new Promise((resolve, reject) => {
+        // 檢查是否有標題行
+        const firstLine = csvText.split('\n')[0];
+        const hasHeader = !firstLine.match(/^[A-Z]{2}\d{3}[A-Z]{2}\/[A-Z]/); // 不是以型號格式開頭
+        
         Papa.parse(csvText, {
-          header: true,
+          header: hasHeader,
           skipEmptyLines: true,
-          dynamicTyping: true,
+          dynamicTyping: false, // 關閉自動類型轉換，保持字串格式
           complete: function(results) {
             if (results.errors.length > 0) {
               console.warn('CSV 解析警告:', results.errors);
             }
-            resolve(results.data);
+            
+            // 如果沒有標題，手動添加標題
+            if (!hasHeader) {
+              const processedData = results.data.map(row => ({
+                'manufacture_style': row[0] || '',
+                'Code': row[1] || '',
+                'product_name': row[2] || '',
+                '大分類': row[3] || '',
+                '中分類': row[4] || '',
+                '小分類': row[5] || '',
+                'Remark': row[6] || ''
+              }));
+              resolve(processedData);
+            } else {
+              resolve(results.data);
+            }
           },
           error: function(error) {
             reject(error);
@@ -182,36 +176,6 @@
       const keyword = e.target.value;
       const filtered = filterData(keyword);
       renderTable(filtered);
-    });
-
-    document.getElementById('fileInput').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      hideMessages();
-      
-      try {
-        const text = await file.text();
-        originalData = await parseCSVWithPapa(text);
-        
-        if (originalData.length === 0) {
-          showError('CSV 檔案是空的或格式不正確');
-          return;
-        }
-
-        const headers = Object.keys(originalData[0]);
-        const mappingSuccess = createColumnMapping(headers);
-        
-        if (!mappingSuccess) {
-          showError('無法識別 CSV 欄位，請檢查欄位名稱是否正確');
-          return;
-        }
-
-        renderTable(originalData);
-        
-      } catch (error) {
-        showError('讀取檔案時發生錯誤: ' + error.message);
-      }
     });
 
     // 載入預設 CSV 檔案
