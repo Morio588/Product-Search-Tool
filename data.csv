@@ -1,4 +1,4 @@
-﻿manufacture_style,Code,product_name,大分類,中分類,小分類,remark
+﻿manufacture_style,Code,product_name,大分類,中分類,小分類,Remark
 MC747TA/A,0024810094,45W Magsafe Power MC747,Accy,#Power Adapter,Magsafe,正常品
 MD564FE/A,0024838073,APPLE USB SUPERDRIVE MD564,Accy,*CPU Accy,Super Drive,正常品
 MD592TA/A,0024838077,45W Magsafe 2 Power MD592,Accy,#Power Adapter,Magsafe,正常品
@@ -1438,4 +1438,5 @@ SXHW2TA/A,0013030150,AC+ for AW SE 3 SXHW2,Care,ACPP+,AW SE 3 ACPP+,正常品
 SXCJ2TA/A,0013030151,AC+ for AW S11 SXCJ2,Care,ACPP+,AW S11 ACPP+,正常品
 SXCK2TA/A,0013030152,AC+ for AW Ultra 3 SXCK2,Care,ACPP+,AW Ultra ACPP+,正常品
 SXAF2TA/A,0013030153,AC+ for AW Hermes S11 SXAF2,Care,ACPP+,AW S11 ACPP+,正常品
+
 SXAQ2TA/A,0013030154,AC+ for AW Hermes Ultra 3 SXAQ2,Care,ACPP+,AW Ultra ACPP+,正常品
