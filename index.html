@@ -69,17 +69,6 @@
     let originalData = [];
     let columnMapping = {};
 
-    // 欄位對應設定 - 可能的欄位名稱變化
-    const fieldMappings = {
-      'manufacture_style': ['manufacture_style', '型號', 'model', 'Model', '製造商型號'],
-      'Code': ['Code', 'code', '代碼', '編碼', 'SKU', 'sku'],
-      'product_name': ['product_name', '產品名稱', '商品名稱', 'name', 'Name', 'ProductName'],
-      '大分類': ['大分類', 'category', 'Category', '主分類', 'main_category'],
-      '中分類': ['中分類', 'subcategory', 'SubCategory', '次分類', 'sub_category'],
-      '小分類': ['小分類', 'subsubcategory', 'detail_category', '細分類'],
-      'Remark': ['remark', 'Remark', '備註', '說明', 'note', 'Note', 'comment']
-    };
-
     function showDebugInfo(info) {
       const debugDiv = document.getElementById('debugInfo');
       debugDiv.innerHTML = info;
