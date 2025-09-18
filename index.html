@@ -494,7 +494,25 @@
       <div class="nav-menu">
         <button class="nav-btn active" onclick="showPage('search')">產品搜尋</button>
         <button class="nav-btn" onclick="showPage('education')">教育價</button>
+        <button class="nav-btn" onclick="showPage('care')">CARE 保險</button>
+        <!-- CARE 保險頁面 -->
+    <div id="carePage" class="page education-page">
+      <div class="education-content">
+        <h2 class="education-title">CARE 保險資訊</h2>
+        
+        <div class="image-gallery">
+          <div class="image-card">
+            <img src="images/care-insurance.jpg" alt="CARE 保險方案" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="image-placeholder" style="display: none;">CARE 保險方案</div>
+            <div class="image-card-content">
+              <div class="image-card-title">AppleCare+ 保險方案</div>
+              <div class="image-card-description">提供意外損壞保護和優先技術支援服務，讓您的 Apple 產品得到全方位保障</div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+  </div>
     </div>
 
     <!-- 產品搜尋頁面 -->
@@ -603,6 +621,9 @@
       } else if (pageName === 'education') {
         document.getElementById('educationPage').classList.add('active');
         document.querySelector('.nav-btn[onclick="showPage(\'education\')"]').classList.add('active');
+      } else if (pageName === 'care') {
+        document.getElementById('carePage').classList.add('active');
+        document.querySelector('.nav-btn[onclick="showPage(\'care\')"]').classList.add('active');
       }
     }
 
