@@ -279,19 +279,19 @@
       font-weight: 500;
     }
 
-    /* 教育價頁面樣式 */
-    .education-page {
+    /* 教育價和CARE保險頁面樣式 */
+    .content-page {
       padding: 40px 30px;
       background: white;
       min-height: 400px;
     }
 
-    .education-content {
+    .content-wrapper {
       max-width: 1000px;
       margin: 0 auto;
     }
 
-    .education-title {
+    .page-title {
       text-align: center;
       font-size: 32px;
       font-weight: 700;
@@ -362,43 +362,6 @@
       line-height: 1.5;
     }
 
-    .upload-area {
-      border: 2px dashed #d1d5db;
-      border-radius: 16px;
-      padding: 40px;
-      text-align: center;
-      background: #f9fafb;
-      margin-bottom: 30px;
-    }
-
-    .upload-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-      opacity: 0.5;
-    }
-
-    .upload-text {
-      color: #6b7280;
-      font-size: 16px;
-      margin-bottom: 16px;
-    }
-
-    .upload-btn {
-      background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-      color: white;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .upload-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
-    }
-
     .footer {
       text-align: center;
       padding: 20px;
@@ -418,7 +381,7 @@
         font-size: 38px !important;
       }
       
-      .header, .search-section, .table-section, .education-page {
+      .header, .search-section, .table-section, .content-page {
         padding: 24px 20px;
       }
       
@@ -451,7 +414,7 @@
         min-width: 800px;
       }
 
-      .education-title {
+      .page-title {
         font-size: 24px;
       }
 
@@ -495,40 +458,7 @@
         <button class="nav-btn active" onclick="showPage('search')">產品搜尋</button>
         <button class="nav-btn" onclick="showPage('education')">教育價</button>
         <button class="nav-btn" onclick="showPage('care')">CARE 保險</button>
-        <!-- CARE 保險頁面 -->
-    <div id="carePage" class="page education-page">
-      <div class="education-content">
-        <h2 class="education-title">CARE 保險資訊</h2>
-        
-        <div class="image-gallery">
-          <div class="image-card">
-            <img src="images/care-insurance.jpg" alt="CARE 保險方案" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="image-placeholder" style="display: none;">CARE 保險方案</div>
-            <div class="image-card-content">
-              <div class="image-card-title">AppleCare+ 保險方案</div>
-              <div class="image-card-description">提供意外損壞保護和優先技術支援服務，讓您的 Apple 產品得到全方位保障</div>
-              <!-- CARE 保險頁面 -->
-    <div id="carePage" class="page education-page">
-      <div class="education-content">
-        <h2 class="education-title">CARE 保險資訊</h2>
-        
-        <div class="image-gallery">
-          <div class="image-card">
-            <img src="images/care-insurance.jpg" alt="CARE 保險方案" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="image-placeholder" style="display: none;">CARE 保險方案</div>
-            <div class="image-card-content">
-              <div class="image-card-title">AppleCare+ 保險方案</div>
-              <div class="image-card-description">提供意外損壞保護和優先技術支援服務，讓您的 Apple 產品得到全方位保障</div>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
-  </div>
-          </div>
-        </div>
-      </div>
-    </div>
     </div>
 
     <!-- 產品搜尋頁面 -->
@@ -572,12 +502,11 @@
     </div>
 
     <!-- 教育價頁面 -->
-    <div id="educationPage" class="page education-page">
-      <div class="education-content">
-        <h2 class="education-title">教育價格資訊</h2>
+    <div id="educationPage" class="page content-page">
+      <div class="content-wrapper">
+        <h2 class="page-title">教育價格資訊</h2>
         
-        <div class="image-gallery" id="imageGallery">
-          <!-- 這裡放置您的教育價格圖片 -->
+        <div class="image-gallery">
           <div class="image-card">
             <img src="images/mac-education-price.jpg" alt="Mac 教育價格表" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             <div class="image-placeholder" style="display: none;">Mac 教育價格表</div>
@@ -602,6 +531,24 @@
             <div class="image-card-content">
               <div class="image-card-title">配件教育優惠</div>
               <div class="image-card-description">Apple 配件產品的教育優惠價格，包含鍵盤、滑鼠、充電器等</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARE 保險頁面 -->
+    <div id="carePage" class="page content-page">
+      <div class="content-wrapper">
+        <h2 class="page-title">CARE 保險資訊</h2>
+        
+        <div class="image-gallery">
+          <div class="image-card">
+            <img src="images/care-insurance.jpg" alt="CARE 保險方案" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="image-placeholder" style="display: none;">CARE 保險方案</div>
+            <div class="image-card-content">
+              <div class="image-card-title">AppleCare+ 保險方案</div>
+              <div class="image-card-description">提供意外損壞保護和優先技術支援服務，讓您的 Apple 產品得到全方位保障</div>
             </div>
           </div>
         </div>
