@@ -1,39 +1,4 @@
-// 更新中分類選項（根據大分類篩選）
-    function updateSubcategoryOptions(selectedCategory) {
-      const subcategorySelect = document.getElementById('subcategoryFilter');
-      
-      // 清空現有選項
-      subcategorySelect.innerHTML = '<option value="">所有中分類</option>';
-      
-      let subcategoriesToShow = [];
-      
-      // 如果選擇了特定大分類且有定義對應的中分類
-      if (selectedCategory && categorySubcategoryMap[selectedCategory]) {
-        subcategoriesToShow = categorySubcategoryMap[selectedCategory];
-      } else if (selectedCategory) {
-        // 如果選擇了大分類但沒有特別定義，顯示該大分類下的所有中分類
-        subcategoriesToShow = Array.from(allSubcategories).filter(subcategory => {
-          return originalData.some(row => 
-            row[columnMapping['大分類']] === selectedCategory &&
-            row[columnMapping['中分類']] === subcategory
-          );
-        }).sort();
-      } else {
-        // 沒有選擇大分類，顯示所有中分類
-        subcategoriesToShow = Array.from(allSubcategories).sort();
-      }
-      
-      // 添加中分類選項
-      subcategoriesToShow.forEach(subcategory => {
-        const option = document.createElement('option');
-        option.value = subcategory;
-        option.textContent = subcategory;
-        subcategorySelect.appendChild(option);
-      });
-      
-      // 清空中分類選擇
-      subcategorySelect.value = '';
-    }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
@@ -182,9 +147,8 @@
     }
 
     .search-container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
-      position: relative;
     }
 
     .search-row {
@@ -198,6 +162,39 @@
       flex: 1;
       min-width: 300px;
       position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      z-index: 2;
+    }
+
+    #searchInput { 
+      width: 100%;
+      padding: 18px 24px 18px 56px;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 500;
+      background: white;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    #searchInput:focus { 
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 10px 25px -5px rgba(59, 130, 246, 0.1);
+      transform: translateY(-2px);
+    }
+
+    #searchInput::placeholder {
+      color: #9ca3af;
+      font-weight: 400;
     }
 
     .filter-select {
@@ -256,6 +253,13 @@
       justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .quick-filter-label {
+      font-size: 13px;
+      color: #6b7280;
+      font-weight: 600;
     }
 
     .quick-filter-btn {
@@ -284,45 +288,56 @@
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
 
-    .quick-filter-label {
-      font-size: 12px;
-      color: #6b7280;
+    .quick-subcategory-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px solid #e5e7eb;
+      display: none;
+    }
+
+    .quick-subcategory-section.show {
+      display: block;
+    }
+
+    .quick-subcategory-label {
+      font-size: 13px;
+      color: #92400e;
+      font-weight: 600;
+      margin-bottom: 12px;
       text-align: center;
-      margin-top: 8px;
-      font-weight: 500;
     }
 
-    .search-icon {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #9ca3af;
-      z-index: 2;
+    .quick-subcategory-filters {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    #searchInput { 
-      width: 100%;
-      padding: 18px 24px 18px 56px;
-      border: 2px solid #e5e7eb;
-      border-radius: 16px;
-      font-size: 16px;
-      font-weight: 500;
-      background: white;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    .quick-subcategory-btn {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border: 2px solid #fbbf24;
+      border-radius: 10px;
+      color: #92400e;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
-    #searchInput:focus { 
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 10px 25px -5px rgba(59, 130, 246, 0.1);
+    .quick-subcategory-btn:hover {
       transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-color: #f59e0b;
     }
 
-    #searchInput::placeholder {
-      color: #9ca3af;
-      font-weight: 400;
+    .quick-subcategory-btn.active {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      border-color: #d97706;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
     }
 
     .table-section {
@@ -419,7 +434,6 @@
       font-weight: 500;
     }
 
-    /* 教育價和CARE保險頁面樣式 */
     .content-page {
       padding: 40px 30px;
       background: white;
@@ -510,7 +524,6 @@
       font-weight: 400;
     }
 
-    /* 響應式設計 */
     @media (max-width: 768px) { 
       .container {
         margin: 10px;
@@ -536,6 +549,19 @@
         text-align: center;
       }
       
+      .search-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-input-wrapper {
+        min-width: unset;
+      }
+      
+      .filter-select {
+        min-width: unset;
+      }
+      
       #searchInput {
         padding: 16px 20px 16px 48px;
         font-size: 14px;
@@ -557,14 +583,8 @@
       .page-title {
         font-size: 24px;
       }
-
-      .image-gallery {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
     }
 
-    /* 載入動畫 */
     .loading {
       display: flex;
       justify-content: center;
@@ -601,7 +621,6 @@
       </div>
     </div>
 
-    <!-- 產品搜尋頁面 -->
     <div id="searchPage" class="page active">
       <div class="search-section">
         <div class="search-container">
@@ -628,11 +647,16 @@
           <div id="filterInfo" class="filter-info"></div>
           
           <div class="quick-filters">
-            <div class="quick-filter-label">快速篩選：</div>
-            <button class="quick-filter-btn" onclick="quickFilter('CPU')">CPU</button>
-            <button class="quick-filter-btn" onclick="quickFilter('iPad')">iPad</button>
-            <button class="quick-filter-btn" onclick="quickFilter('iPhone')">iPhone</button>
-            <button class="quick-filter-btn" onclick="quickFilter('Apple Watch')">Apple Watch</button>
+            <span class="quick-filter-label">快速篩選：</span>
+            <button class="quick-filter-btn" data-category="CPU">CPU</button>
+            <button class="quick-filter-btn" data-category="iPad">iPad</button>
+            <button class="quick-filter-btn" data-category="iPhone">iPhone</button>
+            <button class="quick-filter-btn" data-category="Apple Watch">Apple Watch</button>
+          </div>
+          
+          <div id="quickSubcategorySection" class="quick-subcategory-section">
+            <div class="quick-subcategory-label">選擇機型：</div>
+            <div id="quickSubcategoryFilters" class="quick-subcategory-filters"></div>
           </div>
         </div>
       </div>
@@ -665,7 +689,6 @@
       </div>
     </div>
 
-    <!-- 教育價頁面 -->
     <div id="educationPage" class="page content-page">
       <div class="content-wrapper">
         <h2 class="page-title">教育價格資訊</h2>
@@ -701,7 +724,6 @@
       </div>
     </div>
 
-    <!-- CARE 保險頁面 -->
     <div id="carePage" class="page content-page">
       <div class="content-wrapper">
         <h2 class="page-title">CARE 保險資訊</h2>
@@ -725,41 +747,27 @@
   </footer>
 
   <script>
-    let data = [];
     let originalData = [];
     let columnMapping = {};
     let allCategories = new Set();
     let allSubcategories = new Set();
     let activeQuickFilter = null;
-    
-    // 定義特定大分類對應的中分類
-    const categorySubcategoryMap = {
-      'CPU': [
-        'IMAC',
-        'MAC MINI',
-        'MAC STUDIO',
-        'MACBOOK AIR 13(M4)',
-        'MACBOOK AIR 15(M4)',
-        'MACBOOK PRO 16',
-        'MBP 14 M4',
-        'MBP 14 M4 Pro&Max',
-        'MBP 16 M4 Pro&Max'
-      ]
+    let activeQuickSubcategory = null;
+
+    const fieldMappings = {
+      'manufacture_style': ['manufacture_style', '型號', 'model', 'Model'],
+      'Code': ['Code', 'code', '代碼', '編碼', 'SKU', 'sku'],
+      'product_name': ['product_name', '產品名稱', '商品名稱', 'name', 'Name'],
+      '大分類': ['大分類', 'category', 'Category'],
+      '中分類': ['中分類', 'subcategory', 'SubCategory'],
+      '小分類': ['小分類', 'subsubcategory'],
+      'Remark': ['remark', 'Remark', '備註', '說明', 'note']
     };
 
-    // 頁面切換功能
     function showPage(pageName) {
-      // 隱藏所有頁面
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
+      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
       
-      // 移除所有按鈕的 active 狀態
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      
-      // 顯示選中的頁面
       if (pageName === 'search') {
         document.getElementById('searchPage').classList.add('active');
         document.querySelector('.nav-btn[onclick="showPage(\'search\')"]').classList.add('active');
@@ -771,156 +779,6 @@
         document.querySelector('.nav-btn[onclick="showPage(\'care\')"]').classList.add('active');
       }
     }
-
-    // 初始化篩選器
-    function initializeFilters() {
-      const categorySelect = document.getElementById('categoryFilter');
-      const subcategorySelect = document.getElementById('subcategoryFilter');
-      
-      // 清空現有選項（保留預設選項）
-      categorySelect.innerHTML = '<option value="">所有大分類</option>';
-      subcategorySelect.innerHTML = '<option value="">所有中分類</option>';
-      
-      // 收集所有分類
-      allCategories.clear();
-      allSubcategories.clear();
-      
-      originalData.forEach(row => {
-        const category = row[columnMapping['大分類']];
-        const subcategory = row[columnMapping['中分類']];
-        
-        if (category && category.trim()) {
-          allCategories.add(category.trim());
-        }
-        if (subcategory && subcategory.trim()) {
-          allSubcategories.add(subcategory.trim());
-        }
-      });
-      
-      // 添加大分類選項
-      Array.from(allCategories).sort().forEach(category => {
-        const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        categorySelect.appendChild(option);
-      });
-      
-      // 初始化時顯示所有中分類
-      updateSubcategoryOptions('');
-    }
-
-    // 更新篩選資訊
-    function updateFilterInfo() {
-      const keyword = document.getElementById('searchInput').value;
-      const category = document.getElementById('categoryFilter').value;
-      const subcategory = document.getElementById('subcategoryFilter').value;
-      const filterInfo = document.getElementById('filterInfo');
-      
-      let infoText = '';
-      const filters = [];
-      
-      if (keyword) filters.push(`關鍵字: "${keyword}"`);
-      if (category) filters.push(`大分類: "${category}"`);
-      if (subcategory) filters.push(`中分類: "${subcategory}"`);
-      
-      if (filters.length > 0) {
-        infoText = `目前篩選條件: ${filters.join(' | ')}`;
-        filterInfo.textContent = infoText;
-        filterInfo.style.display = 'block';
-      } else {
-        filterInfo.style.display = 'none';
-      }
-    }
-
-    // 綜合篩選函數
-    function applyFilters() {
-      const keyword = document.getElementById('searchInput').value.toLowerCase();
-      const selectedCategory = document.getElementById('categoryFilter').value;
-      const selectedSubcategory = document.getElementById('subcategoryFilter').value;
-      
-      let filtered = originalData;
-      
-      // 大分類篩選
-      if (selectedCategory) {
-        filtered = filtered.filter(row => 
-          row[columnMapping['大分類']] === selectedCategory
-        );
-      }
-      
-      // 中分類篩選
-      if (selectedSubcategory) {
-        filtered = filtered.filter(row => 
-          row[columnMapping['中分類']] === selectedSubcategory
-        );
-      }
-      
-      // 關鍵字篩選
-      if (keyword) {
-        filtered = filtered.filter(row =>
-          Object.values(row).some(value =>
-            value && value.toString().toLowerCase().includes(keyword)
-          )
-        );
-      }
-      
-      renderTable(filtered);
-      updateFilterInfo();
-    }
-
-    // 快速篩選功能
-    function quickFilter(category) {
-      const categorySelect = document.getElementById('categoryFilter');
-      const buttons = document.querySelectorAll('.quick-filter-btn');
-      
-      // 移除所有按鈕的 active 狀態
-      buttons.forEach(btn => btn.classList.remove('active'));
-      
-      // 如果點擊的是已選中的分類，則取消選擇
-      if (activeQuickFilter === category) {
-        activeQuickFilter = null;
-        categorySelect.value = '';
-        updateSubcategoryOptions('');
-      } else {
-        // 選中新的分類
-        activeQuickFilter = category;
-        categorySelect.value = category;
-        
-        // 高亮對應按鈕
-        event.target.classList.add('active');
-        
-        // 更新中分類選項
-        updateSubcategoryOptions(category);
-      }
-      
-      applyFilters();
-    }
-
-    // 清除所有篩選
-    function clearAllFilters() {
-      document.getElementById('searchInput').value = '';
-      document.getElementById('categoryFilter').value = '';
-      document.getElementById('subcategoryFilter').value = '';
-      
-      // 清除快速篩選按鈕狀態
-      activeQuickFilter = null;
-      document.querySelectorAll('.quick-filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      
-      renderTable(originalData);
-      updateFilterInfo();
-    }
-
-    // 欄位對應設定
-    const fieldMappings = {
-      'manufacture_style': ['manufacture_style', '型號', 'model', 'Model', '製造商型號'],
-      'Code': ['Code', 'code', '代碼', '編碼', 'SKU', 'sku'],
-      'product_name': ['product_name', '產品名稱', '商品名稱', 'name', 'Name', 'ProductName'],
-      '大分類': ['大分類', 'category', 'Category', '主分類', 'main_category'],
-      '中分類': ['中分類', 'subcategory', 'SubCategory', '次分類', 'sub_category'],
-      '小分類': ['小分類', 'subsubcategory', 'detail_category', '細分類'],
-      'Remark': ['remark', 'Remark', '備註', '說明', 'note', 'Note', 'comment']
-    };
 
     function showError(error) {
       const errorDiv = document.getElementById('errorInfo');
@@ -934,18 +792,15 @@
 
     function createColumnMapping(headers) {
       columnMapping = {};
-      
       for (const [targetField, possibleNames] of Object.entries(fieldMappings)) {
         const foundHeader = possibleNames.find(name => 
           headers.some(header => header.trim() === name)
         );
-        
         if (foundHeader) {
           const actualHeader = headers.find(header => header.trim() === foundHeader);
           columnMapping[targetField] = actualHeader;
         }
       }
-      
       return Object.keys(columnMapping).length > 0;
     }
 
@@ -959,10 +814,6 @@
           skipEmptyLines: true,
           dynamicTyping: false,
           complete: function(results) {
-            if (results.errors.length > 0) {
-              console.warn('CSV 解析警告:', results.errors);
-            }
-            
             if (!hasHeader) {
               const processedData = results.data.map(row => ({
                 'manufacture_style': row[0] || '',
@@ -978,86 +829,14 @@
               resolve(results.data);
             }
           },
-          error: function(error) {
-            reject(error);
-          }
+          error: reject
         });
       });
     }
 
-    function renderTable(filteredData) {
-      const tbody = document.querySelector('#resultTable tbody');
-      tbody.innerHTML = '';
+    function initializeFilters() {
+      const categorySelect = document.getElementById('categoryFilter');
+      const subcategorySelect = document.getElementById('subcategoryFilter');
       
-      if (filteredData.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="no-results">沒有符合的資料</td></tr>';
-        return;
-      }
-
-      filteredData.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${row[columnMapping['manufacture_style']] || ''}</td>
-          <td>${row[columnMapping['Code']] || ''}</td>
-          <td>${row[columnMapping['product_name']] || ''}</td>
-          <td>${row[columnMapping['大分類']] || ''}</td>
-          <td>${row[columnMapping['中分類']] || ''}</td>
-          <td>${row[columnMapping['小分類']] || ''}</td>
-          <td>${row[columnMapping['Remark']] || row['remark'] || ''}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function filterData(keyword) {
-      const lowerKeyword = keyword.toLowerCase();
-      return originalData.filter(row =>
-        Object.values(row).some(value =>
-          value && value.toString().toLowerCase().includes(lowerKeyword)
-        )
-      );
-    }
-
-    // 事件監聽器
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
-    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
-    document.getElementById('subcategoryFilter').addEventListener('change', applyFilters);
-    document.getElementById('clearFilters').addEventListener('click', clearAllFilters);
-
-    async function loadDefaultCSV() {
-      try {
-        hideMessages();
-        const response = await fetch("data.csv");
-        
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: 無法載入 data.csv`);
-        }
-        
-        const text = await response.text();
-        originalData = await parseCSVWithPapa(text);
-        
-        if (originalData.length === 0) {
-          showError('data.csv 檔案是空的');
-          return;
-        }
-
-        const headers = Object.keys(originalData[0]);
-        const mappingSuccess = createColumnMapping(headers);
-        
-        if (!mappingSuccess) {
-          showError('data.csv 欄位格式不正確');
-          return;
-        }
-
-        renderTable(originalData);
-        initializeFilters();
-        
-      } catch (error) {
-        showError('載入資料失敗: ' + error.message);
-      }
-    }
-
-    loadDefaultCSV();
-  </script>
-</body>
-</html>
+      categorySelect.innerHTML = '<option value="">所有大分類</option>';
+      subcategorySelect.innerHTML = '<option value="">所有中分類</option>';
