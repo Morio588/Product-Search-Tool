@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
@@ -17,591 +16,588 @@
       box-sizing: border-box;
     }
 
-```
-body { 
-  font-family: 'Inter', sans-serif; 
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding: 20px;
-  color: #2d3748;
-}
-
-.container { 
-  max-width: 1400px; 
-  margin: 0 auto; 
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 24px; 
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  overflow: hidden;
-  animation: slideUp 0.6s ease-out;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.header {
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-  padding: 40px 30px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-  animation: shimmer 4s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(180deg); }
-}
-
-h1 { 
-  color: white !important;
-  font-size: 50px !important;
-  font-weight: 700 !important;
-  margin-bottom: 12px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  position: relative;
-  z-index: 1;
-}
-
-.divider { 
-  width: 120px;
-  height: 4px;
-  background: linear-gradient(90deg, #10b981, #3b82f6);
-  border: none;
-  border-radius: 2px;
-  margin: 0 auto 16px;
-  position: relative;
-  z-index: 1;
-}
-
-.subtitle { 
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 400;
-  position: relative;
-  z-index: 1;
-  margin-bottom: 20px;
-}
-
-.nav-menu {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  position: relative;
-  z-index: 1;
-}
-
-.nav-btn {
-  padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.nav-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
-}
-
-.nav-btn.active {
-  background: rgba(255, 255, 255, 0.9);
-  color: #1e3a8a;
-  border-color: rgba(255, 255, 255, 0.9);
-}
-
-.page {
-  display: none;
-}
-
-.page.active {
-  display: block;
-}
-
-.search-section {
-  padding: 40px 30px;
-  background: white;
-}
-
-.search-container {
-  max-width: 800px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.search-row {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.search-input-wrapper {
-  flex: 1;
-  min-width: 300px;
-  position: relative;
-}
-
-.filter-select {
-  min-width: 150px;
-  padding: 18px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  font-size: 16px;
-  font-weight: 500;
-  background: white;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.filter-select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 10px 25px -5px rgba(59, 130, 246, 0.1);
-  transform: translateY(-2px);
-}
-
-.clear-filters {
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
-}
-
-.clear-filters:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
-}
-
-.filter-info {
-  margin-top: 12px;
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  border-radius: 8px;
-  font-size: 14px;
-  color: #1e40af;
-  text-align: center;
-  display: none;
-}
-
-.quick-filters {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.quick-filter-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.quick-filter-btn {
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  color: #475569;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.quick-filter-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-color: #3b82f6;
-}
-
-.quick-filter-btn.active {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
-  border-color: #3b82f6;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.quick-subcategory-btn {
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border: 2px solid #fbbf24;
-  border-radius: 10px;
-  color: #92400e;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  white-space: nowrap;
-}
-
-.quick-subcategory-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-color: #f59e0b;
-}
-
-.quick-subcategory-btn.active {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: white;
-  border-color: #f59e0b;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-}
-
-.quick-filter-label {
-  font-size: 12px;
-  color: #6b7280;
-  font-weight: 500;
-  min-width: 80px;
-}
-
-#quickSubcategoryButtons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-#quickSubcategoryRow {
-  display: none;
-}
-
-#quickSubcategoryRow.active {
-  display: flex;
-}
-
-.search-icon {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  z-index: 2;
-}
-
-#searchInput { 
-  width: 100%;
-  padding: 18px 24px 18px 56px;
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  font-size: 16px;
-  font-weight: 500;
-  background: white;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-#searchInput:focus { 
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 10px 25px -5px rgba(59, 130, 246, 0.1);
-  transform: translateY(-2px);
-}
-
-#searchInput::placeholder {
-  color: #9ca3af;
-  font-weight: 400;
-}
-
-.table-section {
-  padding: 0 30px 40px;
-  background: white;
-}
-
-.table-container { 
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
-}
-
-table { 
-  border-collapse: collapse; 
-  width: 100%; 
-  background: white;
-}
-
-th, td { 
-  padding: 16px 20px;
-  text-align: left; 
-  font-size: 14px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-th { 
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  color: #475569;
-  font-weight: 600;
-  position: sticky; 
-  top: 0; 
-  z-index: 1;
-  text-transform: uppercase;
-  font-size: 14px;
-  letter-spacing: 0.05em;
-}
-
-tbody tr { 
-  transition: all 0.2s ease;
-}
-
-tbody tr:nth-child(even) { 
-  background-color: #fafbfc;
-}
-
-tbody tr:hover { 
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  transform: scale(1.01);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-}
-
-tbody td {
-  font-weight: 500;
-  color: #374151;
-}
-
-tbody td:first-child {
-  font-weight: 600;
-  color: #1e40af;
-  font-size: 15px;
-}
-
-tbody td:nth-child(2) {
-  font-family: 'Monaco', 'Menlo', monospace;
-  color: #059669;
-  font-size: 13px;
-}
-
-.no-results { 
-  text-align: center; 
-  padding: 60px 20px;
-  color: #6b7280;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.no-results::before {
-  content: '🔍';
-  display: block;
-  font-size: 48px;
-  margin-bottom: 16px;
-  opacity: 0.5;
-}
-
-.error { 
-  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  color: #dc2626;
-  padding: 16px 20px;
-  margin: 20px 30px;
-  border-radius: 12px;
-  border: 1px solid #fecaca;
-  font-weight: 500;
-}
-
-/* 教育價和CARE保險頁面樣式 */
-.content-page {
-  padding: 40px 30px;
-  background: white;
-  min-height: 400px;
-}
-
-.content-wrapper {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.page-title {
-  text-align: center;
-  font-size: 32px;
-  font-weight: 700;
-  color: #1e3a8a;
-  margin-bottom: 30px;
-}
-
-.image-gallery {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  margin-top: 30px;
-}
-
-.image-card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.image-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
-}
-
-.image-placeholder {
-  width: 100%;
-  height: auto;
-  min-height: 300px;
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #64748b;
-  font-size: 16px;
-  font-weight: 500;
-  padding: 20px;
-}
-
-.image-card img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 8px;
-  padding: 20px;
-  background: white;
-}
-
-.image-card-content {
-  padding: 20px;
-}
-
-.image-card-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1e40af;
-  margin-bottom: 8px;
-}
-
-.image-card-description {
-  color: #6b7280;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.footer {
-  text-align: center;
-  padding: 20px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
-  font-weight: 400;
-}
-
-/* 響應式設計 */
-@media (max-width: 768px) { 
-  .container {
-    margin: 10px;
-    border-radius: 16px;
-  }
-  
-  h1 {
-    font-size: 38px !important;
-  }
-  
-  .header, .search-section, .table-section, .content-page {
-    padding: 24px 20px;
-  }
-  
-  .nav-menu {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .nav-btn {
-    width: 200px;
-    text-align: center;
-  }
-  
-  #searchInput {
-    padding: 16px 20px 16px 48px;
-    font-size: 14px;
-  }
-  
-  th, td {
-    padding: 12px 16px;
-    font-size: 13px;
-  }
-  
-  .table-container {
-    overflow-x: auto;
-  }
-  
-  table {
-    min-width: 800px;
-  }
-
-  .page-title {
-    font-size: 24px;
-  }
-
-  .image-gallery {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-}
-
-/* 載入動畫 */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #e5e7eb;
-  border-top: 4px solid #3b82f6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-```
-
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #2d3748;
+    }
+
+    .container { 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 24px; 
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: shimmer 4s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(180deg); }
+    }
+
+    h1 { 
+      color: white !important;
+      font-size: 50px !important;
+      font-weight: 700 !important;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .divider { 
+      width: 120px;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #3b82f6);
+      border: none;
+      border-radius: 2px;
+      margin: 0 auto 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .subtitle { 
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 400;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 20px;
+    }
+
+    .nav-menu {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-btn {
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .nav-btn.active {
+      background: rgba(255, 255, 255, 0.9);
+      color: #1e3a8a;
+      border-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .search-section {
+      padding: 40px 30px;
+      background: white;
+    }
+
+    .search-container {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-input-wrapper {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+    }
+
+    .filter-select {
+      min-width: 150px;
+      padding: 18px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 500;
+      background: white;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 10px 25px -5px rgba(59, 130, 246, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .clear-filters {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+
+    .clear-filters:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.3);
+    }
+
+    .filter-info {
+      margin-top: 12px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-radius: 8px;
+      font-size: 14px;
+      color: #1e40af;
+      text-align: center;
+      display: none;
+    }
+
+    .quick-filters {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .quick-filter-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .quick-filter-btn {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      color: #475569;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .quick-filter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-color: #3b82f6;
+    }
+
+    .quick-filter-btn.active {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      border-color: #3b82f6;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .quick-subcategory-btn {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border: 2px solid #fbbf24;
+      border-radius: 10px;
+      color: #92400e;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      white-space: nowrap;
+    }
+
+    .quick-subcategory-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-color: #f59e0b;
+    }
+
+    .quick-subcategory-btn.active {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      border-color: #f59e0b;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .quick-filter-label {
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 500;
+      min-width: 80px;
+    }
+
+    #quickSubcategoryButtons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    #quickSubcategoryRow {
+      display: none;
+    }
+
+    #quickSubcategoryRow.active {
+      display: flex;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      z-index: 2;
+    }
+
+    #searchInput { 
+      width: 100%;
+      padding: 18px 24px 18px 56px;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 500;
+      background: white;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    #searchInput:focus { 
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 10px 25px -5px rgba(59, 130, 246, 0.1);
+      transform: translateY(-2px);
+    }
+
+    #searchInput::placeholder {
+      color: #9ca3af;
+      font-weight: 400;
+    }
+
+    .table-section {
+      padding: 0 30px 40px;
+      background: white;
+    }
+
+    .table-container { 
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+
+    table { 
+      border-collapse: collapse; 
+      width: 100%; 
+      background: white;
+    }
+
+    th, td { 
+      padding: 16px 20px;
+      text-align: left; 
+      font-size: 14px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    th { 
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      color: #475569;
+      font-weight: 600;
+      position: sticky; 
+      top: 0; 
+      z-index: 1;
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+    }
+
+    tbody tr { 
+      transition: all 0.2s ease;
+    }
+
+    tbody tr:nth-child(even) { 
+      background-color: #fafbfc;
+    }
+
+    tbody tr:hover { 
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      transform: scale(1.01);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+
+    tbody td {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    tbody td:first-child {
+      font-weight: 600;
+      color: #1e40af;
+      font-size: 15px;
+    }
+
+    tbody td:nth-child(2) {
+      font-family: 'Monaco', 'Menlo', monospace;
+      color: #059669;
+      font-size: 13px;
+    }
+
+    .no-results { 
+      text-align: center; 
+      padding: 60px 20px;
+      color: #6b7280;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .no-results::before {
+      content: '🔍';
+      display: block;
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .error { 
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      color: #dc2626;
+      padding: 16px 20px;
+      margin: 20px 30px;
+      border-radius: 12px;
+      border: 1px solid #fecaca;
+      font-weight: 500;
+    }
+
+    /* 教育價和CARE保險頁面樣式 */
+    .content-page {
+      padding: 40px 30px;
+      background: white;
+      min-height: 400px;
+    }
+
+    .content-wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 30px;
+    }
+
+    .image-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .image-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .image-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+    }
+
+    .image-placeholder {
+      width: 100%;
+      height: auto;
+      min-height: 300px;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 20px;
+    }
+
+    .image-card img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      padding: 20px;
+      background: white;
+    }
+
+    .image-card-content {
+      padding: 20px;
+    }
+
+    .image-card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 8px;
+    }
+
+    .image-card-description {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 768px) { 
+      .container {
+        margin: 10px;
+        border-radius: 16px;
+      }
+      
+      h1 {
+        font-size: 38px !important;
+      }
+      
+      .header, .search-section, .table-section, .content-page {
+        padding: 24px 20px;
+      }
+      
+      .nav-menu {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .nav-btn {
+        width: 200px;
+        text-align: center;
+      }
+      
+      #searchInput {
+        padding: 16px 20px 16px 48px;
+        font-size: 14px;
+      }
+      
+      th, td {
+        padding: 12px 16px;
+        font-size: 13px;
+      }
+      
+      .table-container {
+        overflow-x: auto;
+      }
+      
+      table {
+        min-width: 800px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .image-gallery {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    /* 載入動畫 */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e5e7eb;
+      border-top: 4px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -610,141 +606,138 @@ tbody td:nth-child(2) {
       <h1>產品查找工具</h1>
       <div class="divider"></div>
       <p class="subtitle">僅限 iStore 內部員工使用</p>
-
-```
-  <div class="nav-menu">
-    <button class="nav-btn active" onclick="showPage('search')">產品搜尋</button>
-    <button class="nav-btn" onclick="showPage('education')">教育價</button>
-    <button class="nav-btn" onclick="showPage('care')">CARE 保險</button>
-  </div>
-</div>
-
-<!-- 產品搜尋頁面 -->
-<div id="searchPage" class="page active">
-  <div class="search-section">
-    <div class="search-container">
-      <div class="search-row">
-        <div class="search-input-wrapper">
-          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.35-4.35"></path>
-          </svg>
-          <input type="text" id="searchInput" placeholder="輸入產品名稱、代碼或分類關鍵字進行搜尋...">
-        </div>
-        
-        <select id="categoryFilter" class="filter-select">
-          <option value="">所有大分類</option>
-        </select>
-        
-        <select id="subcategoryFilter" class="filter-select">
-          <option value="">所有中分類</option>
-        </select>
-        
-        <button id="clearFilters" class="clear-filters">清除篩選</button>
-      </div>
       
-      <div id="filterInfo" class="filter-info"></div>
-      
-      <div class="quick-filters">
-        <div class="quick-filter-row">
-          <div class="quick-filter-label">大分類：</div>
-          <button class="quick-filter-btn" onclick="quickFilter('CPU')">CPU</button>
-          <button class="quick-filter-btn" onclick="quickFilter('iPad')">iPad</button>
-          <button class="quick-filter-btn" onclick="quickFilter('iPhone')">iPhone</button>
-          <button class="quick-filter-btn" onclick="quickFilter('Apple Watch')">Apple Watch</button>
+      <div class="nav-menu">
+        <button class="nav-btn active" onclick="showPage('search')">產品搜尋</button>
+        <button class="nav-btn" onclick="showPage('education')">教育價</button>
+        <button class="nav-btn" onclick="showPage('care')">CARE 保險</button>
+      </div>
+    </div>
+
+    <!-- 產品搜尋頁面 -->
+    <div id="searchPage" class="page active">
+      <div class="search-section">
+        <div class="search-container">
+          <div class="search-row">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+              <input type="text" id="searchInput" placeholder="輸入產品名稱、代碼或分類關鍵字進行搜尋...">
+            </div>
+            
+            <select id="categoryFilter" class="filter-select">
+              <option value="">所有大分類</option>
+            </select>
+            
+            <select id="subcategoryFilter" class="filter-select">
+              <option value="">所有中分類</option>
+            </select>
+            
+            <button id="clearFilters" class="clear-filters">清除篩選</button>
+          </div>
+          
+          <div id="filterInfo" class="filter-info"></div>
+          
+          <div class="quick-filters">
+            <div class="quick-filter-row">
+              <div class="quick-filter-label">大分類：</div>
+              <button class="quick-filter-btn" onclick="quickFilter('CPU')">CPU</button>
+              <button class="quick-filter-btn" onclick="quickFilter('iPad')">iPad</button>
+              <button class="quick-filter-btn" onclick="quickFilter('iPhone')">iPhone</button>
+              <button class="quick-filter-btn" onclick="quickFilter('Apple Watch')">Apple Watch</button>
+            </div>
+            
+            <div class="quick-filter-row" id="quickSubcategoryRow">
+              <div class="quick-filter-label">中分類：</div>
+              <div id="quickSubcategoryButtons"></div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div id="errorInfo" class="error" style="display: none;"></div>
+
+      <div class="table-section">
+        <div class="table-container">
+          <table id="resultTable">
+            <thead>
+              <tr>
+                <th>型號</th>
+                <th>Code</th>
+                <th>產品名稱</th>
+                <th>大分類</th>
+                <th>中分類</th>
+                <th>小分類</th>
+                <th>備註</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="7" class="loading">
+                  <div class="spinner"></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 教育價頁面 -->
+    <div id="educationPage" class="page content-page">
+      <div class="content-wrapper">
+        <h2 class="page-title">教育價格資訊</h2>
         
-        <div class="quick-filter-row" id="quickSubcategoryRow">
-          <div class="quick-filter-label">中分類：</div>
-          <div id="quickSubcategoryButtons"></div>
+        <div class="image-gallery">
+          <div class="image-card">
+            <img src="images/mac-education-price.jpg" alt="Mac 教育價格表" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="image-placeholder" style="display: none;">Mac 教育價格表</div>
+            <div class="image-card-content">
+              <div class="image-card-title">MacBook 教育優惠</div>
+              <div class="image-card-description">適用於學生、教師和教育機構的 MacBook 系列特殊優惠價格</div>
+            </div>
+          </div>
+
+          <div class="image-card">
+            <img src="images/ipad-education-price.jpg" alt="iPad 教育價格表" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="image-placeholder" style="display: none;">iPad 教育價格表</div>
+            <div class="image-card-content">
+              <div class="image-card-title">iPad 教育優惠</div>
+              <div class="image-card-description">iPad 系列產品的教育機構專屬價格資訊</div>
+            </div>
+          </div>
+
+          <div class="image-card">
+            <img src="images/accessories-education-price.jpg" alt="配件教育價格表" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="image-placeholder" style="display: none;">配件教育價格表</div>
+            <div class="image-card-content">
+              <div class="image-card-title">配件教育優惠</div>
+              <div class="image-card-description">Apple 配件產品的教育優惠價格，包含鍵盤、滑鼠、充電器等</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="errorInfo" class="error" style="display: none;"></div>
-
-  <div class="table-section">
-    <div class="table-container">
-      <table id="resultTable">
-        <thead>
-          <tr>
-            <th>型號</th>
-            <th>Code</th>
-            <th>產品名稱</th>
-            <th>大分類</th>
-            <th>中分類</th>
-            <th>小分類</th>
-            <th>備註</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="7" class="loading">
-              <div class="spinner"></div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- 教育價頁面 -->
-<div id="educationPage" class="page content-page">
-  <div class="content-wrapper">
-    <h2 class="page-title">教育價格資訊</h2>
-    
-    <div class="image-gallery">
-      <div class="image-card">
-        <img src="images/mac-education-price.jpg" alt="Mac 教育價格表" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="image-placeholder" style="display: none;">Mac 教育價格表</div>
-        <div class="image-card-content">
-          <div class="image-card-title">MacBook 教育優惠</div>
-          <div class="image-card-description">適用於學生、教師和教育機構的 MacBook 系列特殊優惠價格</div>
-        </div>
-      </div>
-
-      <div class="image-card">
-        <img src="images/ipad-education-price.jpg" alt="iPad 教育價格表" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="image-placeholder" style="display: none;">iPad 教育價格表</div>
-        <div class="image-card-content">
-          <div class="image-card-title">iPad 教育優惠</div>
-          <div class="image-card-description">iPad 系列產品的教育機構專屬價格資訊</div>
-        </div>
-      </div>
-
-      <div class="image-card">
-        <img src="images/accessories-education-price.jpg" alt="配件教育價格表" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="image-placeholder" style="display: none;">配件教育價格表</div>
-        <div class="image-card-content">
-          <div class="image-card-title">配件教育優惠</div>
-          <div class="image-card-description">Apple 配件產品的教育優惠價格，包含鍵盤、滑鼠、充電器等</div>
+    <!-- CARE 保險頁面 -->
+    <div id="carePage" class="page content-page">
+      <div class="content-wrapper">
+        <h2 class="page-title">CARE 保險資訊</h2>
+        
+        <div class="image-gallery">
+          <div class="image-card">
+            <img src="images/care-insurance.jpg" alt="CARE 保險方案" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="image-placeholder" style="display: none;">CARE 保險方案</div>
+            <div class="image-card-content">
+              <div class="image-card-title">AppleCare+ 保險方案</div>
+              <div class="image-card-description">提供意外損壞保護和優先技術支援服務，讓您的 Apple 產品得到全方位保障</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- CARE 保險頁面 -->
-<div id="carePage" class="page content-page">
-  <div class="content-wrapper">
-    <h2 class="page-title">CARE 保險資訊</h2>
-    
-    <div class="image-gallery">
-      <div class="image-card">
-        <img src="images/care-insurance.jpg" alt="CARE 保險方案" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="image-placeholder" style="display: none;">CARE 保險方案</div>
-        <div class="image-card-content">
-          <div class="image-card-title">AppleCare+ 保險方案</div>
-          <div class="image-card-description">提供意外損壞保護和優先技術支援服務，讓您的 Apple 產品得到全方位保障</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-```
-
   </div>
 
   <footer class="footer">
@@ -1238,6 +1231,5 @@ tbody td:nth-child(2) {
 
     loadDefaultCSV();
   </script>
-
 </body>
 </html>
