@@ -1,9 +1,9 @@
 {
-  "lastUpdate": "2025/11/03 08:49:30",
-  "totalProducts": 198,
-  "totalStock": 1995,
+  "lastUpdate": "2025/11/04 15:25:52",
+  "totalProducts": 207,
+  "totalStock": 2303,
   "outOfStock": 0,
-  "lowStock": 148,
+  "lowStock": 144,
   "inventory": {
     "0013028201": {
       "stock": 1,
@@ -26,7 +26,7 @@
       "name": "M4 MBA 13 24G 512 藍 MC6V4"
     },
     "0013028715": {
-      "stock": 2,
+      "stock": 1,
       "name": "M4 MBA 15 16G 256 藍 MC7A4"
     },
     "0013028717": {
@@ -38,7 +38,7 @@
       "name": "M4 MBA 13 8GP 16G 256 銀 MW0W3"
     },
     "0013028720": {
-      "stock": 8,
+      "stock": 7,
       "name": "M4 MBA 13 8GP 16G 256 星 MW0Y3"
     },
     "0013028721": {
@@ -77,12 +77,8 @@
       "stock": 4,
       "name": "iPad mini WF 128G 藍 MXN73"
     },
-    "0013028070": {
-      "stock": 3,
-      "name": "iPad mini WF 128G 紫 MXN93"
-    },
     "0013028071": {
-      "stock": 3,
+      "stock": 2,
       "name": "iPad mini WF 256G 太空灰 MXNA3"
     },
     "0013028086": {
@@ -98,15 +94,15 @@
       "name": "3L205 iPad 10.9 WiFi 64 黃"
     },
     "0013028574": {
-      "stock": 19,
+      "stock": 17,
       "name": "iPad 11 WiFi 128 銀 MD3Y4"
     },
     "0013028575": {
-      "stock": 16,
+      "stock": 14,
       "name": "iPad 11 WiFi 128 藍 MD4A4"
     },
     "0013028577": {
-      "stock": 9,
+      "stock": 6,
       "name": "iPad 11 WiFi 128 粉 MD4E4"
     },
     "0013028598": {
@@ -126,7 +122,7 @@
       "name": "iPad Air 11 WF 256 灰 MCA14"
     },
     "0013028603": {
-      "stock": 22,
+      "stock": 19,
       "name": "iPad Air 11 WF 256 藍 MCA34"
     },
     "0013028604": {
@@ -153,13 +149,13 @@
       "stock": 2,
       "name": "iPad Air 13 WF 128 藍 MCNJ4"
     },
-    "0013028648": {
-      "stock": 1,
-      "name": "iPad Air 13 WF 128 星 MCNK4"
-    },
     "0013028650": {
-      "stock": 2,
+      "stock": 1,
       "name": "iPad Air 13 WF 256 灰 MCNN4"
+    },
+    "0013028653": {
+      "stock": 1,
+      "name": "iPad Air 13 WF 256 紫 MCNR4"
     },
     "0013028657": {
       "stock": 1,
@@ -185,10 +181,6 @@
       "stock": 1,
       "name": "M4 iMac 24 10C 16 256 綠 MWUY3"
     },
-    "0013028159": {
-      "stock": 1,
-      "name": "M4 Mac mini 10核 16 256 MU9D3"
-    },
     "0013028161": {
       "stock": 1,
       "name": "M4 Mac mini 10核 24 512 MCYT4"
@@ -198,7 +190,7 @@
       "name": "M4P Mac mini 16核 24 512 MCX44"
     },
     "0013029819": {
-      "stock": 27,
+      "stock": 26,
       "name": "AW SE 40 星鋁/星帶 S MEH34"
     },
     "0013029821": {
@@ -210,7 +202,7 @@
       "name": "AW SE 44 星鋁/星帶 S MEHG4"
     },
     "0013029824": {
-      "stock": 4,
+      "stock": 3,
       "name": "AW SE 44 星鋁/星帶 L MEHJ4"
     },
     "0013029833": {
@@ -218,8 +210,12 @@
       "name": "AW SE CL 44 午鋁/午帶 S MEPH4"
     },
     "0013029834": {
-      "stock": 4,
+      "stock": 3,
       "name": "AW SE CL 44 午鋁/午帶 L MEPJ4"
+    },
+    "0013029836": {
+      "stock": 6,
+      "name": "AW S11 42 黑鋁/黑帶 L MEQU4"
     },
     "0013029837": {
       "stock": 6,
@@ -229,20 +225,28 @@
       "stock": 4,
       "name": "AW S11 42 灰鋁/黑帶 L MEQX4"
     },
+    "0013029839": {
+      "stock": 22,
+      "name": "AW S11 42 金鋁/粉帶 S MEU04"
+    },
     "0013029843": {
       "stock": 23,
       "name": "AW S11 46 黑鋁/黑帶 S MEUW4"
     },
     "0013029844": {
-      "stock": 5,
+      "stock": 4,
       "name": "AW S11 46 黑鋁/黑帶 L MEUX4"
     },
+    "0013029846": {
+      "stock": 42,
+      "name": "AW S11 46 灰鋁/黑帶 L MEV44"
+    },
     "0013029847": {
-      "stock": 15,
+      "stock": 14,
       "name": "AW S11 46 金鋁/粉帶 S MEV64"
     },
     "0013029849": {
-      "stock": 13,
+      "stock": 12,
       "name": "AW S11 46 銀鋁/紫帶 S MEV94"
     },
     "0013029850": {
@@ -285,10 +289,6 @@
       "stock": 1,
       "name": "AW S11 CL 46 原鈦/原米 S MFCY4"
     },
-    "0013029879": {
-      "stock": 1,
-      "name": "AW S11 CL 46 原鈦/原米 L MFD04"
-    },
     "0013029885": {
       "stock": 1,
       "name": "AW S11 CL 46 金鈦/粉帶 L MFD64"
@@ -309,8 +309,16 @@
       "stock": 3,
       "name": "AW Ultra 原鈦/原米蘭環 S MEWW4"
     },
+    "0013029895": {
+      "stock": 6,
+      "name": "AW Ultra 原鈦/原米蘭環 M MEWY4"
+    },
+    "0013029896": {
+      "stock": 7,
+      "name": "AW Ultra 原鈦/原米蘭環 L MF0E4"
+    },
     "0013029897": {
-      "stock": 4,
+      "stock": 10,
       "name": "AW Ultra 黑鈦/海洋黑 MF0J4"
     },
     "0013029903": {
@@ -386,7 +394,7 @@
       "name": "ME177D TIME CAPSULE 2TB"
     },
     "0013018202": {
-      "stock": 68,
+      "stock": 67,
       "name": "AirTag 一入 MX532"
     },
     "0013018203": {
@@ -394,23 +402,23 @@
       "name": "AirTag 四入 MX542"
     },
     "0013025673": {
-      "stock": 27,
+      "stock": 26,
       "name": "AW USB-C 磁性快充線 1m MT0H3"
     },
     "0013026024": {
-      "stock": 102,
+      "stock": 99,
       "name": "USB-C to Lightning 1m MUQ93"
     },
     "0013026025": {
-      "stock": 39,
+      "stock": 33,
       "name": "Lightning to USB 1m MUQW3"
     },
     "0013026076": {
-      "stock": 285,
+      "stock": 276,
       "name": "20W USB-C Adapter MWVV3"
     },
     "0013026218": {
-      "stock": 13,
+      "stock": 20,
       "name": "35W 雙 USB-C 小型充電器 MW2H3"
     },
     "0013026219": {
@@ -418,7 +426,7 @@
       "name": "96W USB-C Power Adapter MW2L3"
     },
     "0013026364": {
-      "stock": 170,
+      "stock": 168,
       "name": "Apple Pencil Pro MX2D3"
     },
     "0013026366": {
@@ -442,11 +450,11 @@
       "name": "3M780 iPad Pro 13 WF 256 黑"
     },
     "0013026708": {
-      "stock": 22,
+      "stock": 21,
       "name": "USB-C to 3.5mm 孔 轉接器 MW2Q3"
     },
     "0013026709": {
-      "stock": 19,
+      "stock": 18,
       "name": "USB-C to Lightning 2m MW2R3"
     },
     "0013026711": {
@@ -458,7 +466,7 @@
       "name": "USB-C to SD 讀卡機 MW653"
     },
     "0013026714": {
-      "stock": 35,
+      "stock": 41,
       "name": "EarPods For Lightning MWTY3"
     },
     "0013026715": {
@@ -466,15 +474,15 @@
       "name": "EarPods For 3.5mm MWU53"
     },
     "0013026814": {
-      "stock": 234,
+      "stock": 225,
       "name": "USB-C Charge Cable (1m) MW493"
     },
     "0013026818": {
-      "stock": 22,
+      "stock": 18,
       "name": "USB-C Charge Cable (2m) MYQT3"
     },
     "0013026819": {
-      "stock": 30,
+      "stock": 21,
       "name": "EarPods for USB-C MYQY3"
     },
     "0013027612": {
@@ -506,11 +514,11 @@
       "name": "iPhone 織紋卡套 午紫 MGH84"
     },
     "0013029975": {
-      "stock": 2,
+      "stock": 1,
       "name": "斜背掛繩 黑 MGGL4"
     },
     "0013029983": {
-      "stock": 15,
+      "stock": 81,
       "name": "40W 電源轉接器 MGKQ4"
     },
     "0013029984": {
@@ -522,11 +530,11 @@
       "name": "iPhone Air MagSafe 電池 MGPG4"
     },
     "0013027950": {
-      "stock": 31,
+      "stock": 30,
       "name": "AirPods 第四代 MXP63"
     },
     "0013027951": {
-      "stock": 84,
+      "stock": 82,
       "name": "AirPods 第四代 降噪 MXP93"
     },
     "0013027952": {
@@ -557,6 +565,18 @@
       "stock": 1,
       "name": "3G956 HomePod mini 白"
     },
+    "0013020089": {
+      "stock": 3,
+      "name": "HomePod mini 橘 MJ2D3"
+    },
+    "0013026804": {
+      "stock": 7,
+      "name": "HomePod mini 午夜 MTJT3"
+    },
+    "0013028942": {
+      "stock": 1,
+      "name": "HomePod 午夜 MDEW4"
+    },
     "0013028151": {
       "stock": 2,
       "name": "Magic Keyboard MXCL3"
@@ -586,7 +606,7 @@
       "name": "Air 11 M2/3 巧控鍵盤 黑 MGYX4"
     },
     "0013030537": {
-      "stock": 3,
+      "stock": 2,
       "name": "Air 13 M2/3 巧控鍵盤 黑 MGYY4"
     },
     "0024838073": {
@@ -618,16 +638,20 @@
       "name": "iPhone 17P 矽膠殼 紫 MGFG4"
     },
     "0013029944": {
-      "stock": 5,
+      "stock": 2,
       "name": "iPhone 17P 矽膠殼 午 MGFH4"
     },
     "0013029958": {
-      "stock": 5,
+      "stock": 4,
       "name": "iPhone 17PM 織紋殼 黑 MGF84"
     },
     "0013009414": {
       "stock": 1,
       "name": "3G357 iPhone SE 64 白"
+    },
+    "0013027361": {
+      "stock": 10,
+      "name": "iPhone 16 128GB 黑 MYE73"
     },
     "0013027376": {
       "stock": 2,
@@ -648,6 +672,10 @@
     "0013029776": {
       "stock": 3,
       "name": "iPhone 17 256G 黑 MG6J4"
+    },
+    "0013029780": {
+      "stock": 17,
+      "name": "iPhone 17 256G 鼠尾綠 MG6N4"
     },
     "0013029782": {
       "stock": 1,
@@ -686,15 +714,15 @@
       "name": "iPhone Air 1T 天藍 MG304"
     },
     "0013029798": {
-      "stock": 31,
+      "stock": 66,
       "name": "iPhone 17 Pro 256G 銀 MG8G4"
     },
     "0013029799": {
-      "stock": 42,
+      "stock": 62,
       "name": "iPhone 17 Pro 256G 橙 MG8H4"
     },
     "0013029800": {
-      "stock": 33,
+      "stock": 80,
       "name": "iPhone 17 Pro 256G 藏藍 MG8J4"
     },
     "0013029801": {
@@ -702,20 +730,28 @@
       "name": "iPhone 17 Pro 512G 銀 MG8K4"
     },
     "0013029802": {
-      "stock": 11,
+      "stock": 8,
       "name": "iPhone 17 Pro 512G 橙 MG8M4"
     },
     "0013029803": {
-      "stock": 1,
+      "stock": 11,
       "name": "iPhone 17 Pro 512G 藏藍 MG8N4"
     },
     "0013029807": {
-      "stock": 5,
+      "stock": 40,
       "name": "iPhone 17 PM 256G 銀 MFYM4"
     },
     "0013029808": {
-      "stock": 29,
+      "stock": 32,
       "name": "iPhone 17 PM 256G 橙 MFYN4"
+    },
+    "0013029809": {
+      "stock": 10,
+      "name": "iPhone 17 PM 256G 藏藍 MFYP4"
+    },
+    "0013029810": {
+      "stock": 25,
+      "name": "iPhone 17 PM 512G 銀 MFYQ4"
     },
     "0013029812": {
       "stock": 1,
