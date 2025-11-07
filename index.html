@@ -956,13 +956,13 @@
                   <th>大分類</th>
                   <th>中分類</th>
                   <th>小分類</th>
-                  <th>庫存</th> <!-- 🆕 新增庫存欄位 -->
+                  <th id="stockHeader" style="display: none;">庫存</th> <!-- 🆕 預設隱藏 -->
                   <th>備註</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="8" class="loading"> <!-- 🆕 colspan 改成 8 -->
+                  <td colspan="8" class="loading">
                     <div class="spinner"></div>
                   </td>
                 </tr>
@@ -1108,10 +1108,25 @@
         document.getElementById('userName').textContent = user.displayName || user.email;
         document.getElementById('userAvatar').src = user.photoURL || 'https://via.placeholder.com/36';
         
-        // 🆕 登入後載入資料
+        // 🆕 儲存使用者資訊並檢查權限
+        currentUserEmail = user.email;
+        hasInventoryPermission = INVENTORY_PERMISSION_USERS.includes(user.email);
+        
+        console.log(`👤 使用者: ${user.email}`);
+        console.log(`🔐 庫存權限: ${hasInventoryPermission ? '✅ 有' : '❌ 無'}`);
+        
+        // 🆕 初始化介面（顯示/隱藏庫存欄位）
+        initializeInventoryUI();
+        
+        // 登入後載入資料
         if (window.loadDefaultCSV) {
           window.loadDefaultCSV().then(() => {
-            window.loadInventory(); // 載入庫存
+            // 只有有權限的使用者才載入庫存
+            if (hasInventoryPermission) {
+              window.loadInventory();
+            } else {
+              console.log('⚠️ 此帳號無庫存查看權限');
+            }
           });
         }
       } else {
@@ -1141,6 +1156,13 @@
     let activeQuickFilter = null;
     let activeQuickSubcategory = null;
     let inventoryData = {}; // 🆕 儲存庫存資料
+    let currentUserEmail = ''; // 🆕 當前使用者 email
+    let hasInventoryPermission = false; // 🆕 是否有庫存查看權限
+    
+    // 🆕 有庫存查看權限的使用者清單
+    const INVENTORY_PERMISSION_USERS = [
+      'morio.chang@istore.com.tw'
+    ];
 
     function showPage(pageName) {
       document.querySelectorAll('.page').forEach(page => {
@@ -1469,40 +1491,80 @@
       const tbody = document.querySelector('#resultTable tbody');
       tbody.innerHTML = '';
       
+      // 🆕 根據權限決定 colspan
+      const colspanCount = hasInventoryPermission ? 8 : 7;
+      
       if (filteredData.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="no-results">沒有符合的資料</td></tr>';
+        tbody.innerHTML = `<tr><td colspan="${colspanCount}" class="no-results">沒有符合的資料</td></tr>`;
         return;
       }
 
       filteredData.forEach(row => {
         const code = row[columnMapping['Code']] || '';
-        const stock = inventoryData[code]?.stock;
         
-        // 🆕 決定庫存顯示
-        let stockHtml = '<span class="stock-unknown">-</span>';
-        if (stock !== undefined && stock !== null) {
-          if (stock === 0) {
-            stockHtml = '<span class="stock-out">缺貨</span>';
-          } else if (stock <= 5) {
-            stockHtml = `<span class="stock-low">${stock}</span>`;
-          } else {
-            stockHtml = `<span class="stock-available">${stock}</span>`;
+        // 🆕 只有有權限的使用者才處理庫存
+        let stockHtml = '';
+        if (hasInventoryPermission) {
+          const stock = inventoryData[code]?.stock;
+          
+          // 決定庫存顯示
+          stockHtml = '<span class="stock-unknown">-</span>';
+          if (stock !== undefined && stock !== null) {
+            if (stock === 0) {
+              stockHtml = '<span class="stock-out">缺貨</span>';
+            } else if (stock <= 5) {
+              stockHtml = `<span class="stock-low">${stock}</span>`;
+            } else {
+              stockHtml = `<span class="stock-available">${stock}</span>`;
+            }
           }
         }
         
         const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${row[columnMapping['manufacture_style']] || ''}</td>
-          <td>${code}</td>
-          <td>${row[columnMapping['product_name']] || ''}</td>
-          <td>${row[columnMapping['大分類']] || ''}</td>
-          <td>${row[columnMapping['中分類']] || ''}</td>
-          <td>${row[columnMapping['小分類']] || ''}</td>
-          <td class="stock-cell">${stockHtml}</td>
-          <td>${row[columnMapping['Remark']] || ''}</td>
-        `;
+        
+        // 🆕 根據權限決定是否顯示庫存欄位
+        if (hasInventoryPermission) {
+          tr.innerHTML = `
+            <td>${row[columnMapping['manufacture_style']] || ''}</td>
+            <td>${code}</td>
+            <td>${row[columnMapping['product_name']] || ''}</td>
+            <td>${row[columnMapping['大分類']] || ''}</td>
+            <td>${row[columnMapping['中分類']] || ''}</td>
+            <td>${row[columnMapping['小分類']] || ''}</td>
+            <td class="stock-cell">${stockHtml}</td>
+            <td>${row[columnMapping['Remark']] || ''}</td>
+          `;
+        } else {
+          tr.innerHTML = `
+            <td>${row[columnMapping['manufacture_style']] || ''}</td>
+            <td>${code}</td>
+            <td>${row[columnMapping['product_name']] || ''}</td>
+            <td>${row[columnMapping['大分類']] || ''}</td>
+            <td>${row[columnMapping['中分類']] || ''}</td>
+            <td>${row[columnMapping['小分類']] || ''}</td>
+            <td>${row[columnMapping['Remark']] || ''}</td>
+          `;
+        }
+        
         tbody.appendChild(tr);
       });
+    }
+
+    // 🆕 根據權限初始化介面
+    function initializeInventoryUI() {
+      const stockHeader = document.getElementById('stockHeader');
+      const inventoryStatus = document.getElementById('inventoryStatus');
+      
+      if (hasInventoryPermission) {
+        // 顯示庫存欄位
+        if (stockHeader) stockHeader.style.display = '';
+        console.log('✅ 庫存欄位已啟用');
+      } else {
+        // 隱藏庫存欄位
+        if (stockHeader) stockHeader.style.display = 'none';
+        if (inventoryStatus) inventoryStatus.style.display = 'none';
+        console.log('⚠️ 庫存欄位已隱藏');
+      }
     }
 
     // 🆕 載入庫存資料
