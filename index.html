@@ -415,6 +415,101 @@
       text-align: center;
     }
 
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      .store-list {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+      }
+
+      .store-item {
+        padding: 10px 6px;
+        border-radius: 8px;
+      }
+
+      .store-name {
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+
+      .store-stock {
+        font-size: 14px;
+      }
+
+      .inventory-modal-content {
+        width: 95%;
+        max-height: 90vh;
+      }
+
+      .modal-header {
+        padding: 20px 20px;
+      }
+
+      .modal-title {
+        font-size: 16px;
+        padding-right: 35px;
+      }
+
+      .modal-subtitle {
+        font-size: 12px;
+      }
+
+      .modal-body {
+        padding: 16px 20px;
+      }
+
+      .modal-summary {
+        gap: 12px;
+        padding: 12px;
+        margin-bottom: 16px;
+      }
+
+      .summary-label {
+        font-size: 11px;
+      }
+
+      .summary-value {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .store-list {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+      }
+
+      .store-item {
+        padding: 8px 4px;
+        border-radius: 6px;
+      }
+
+      .store-name {
+        font-size: 11px;
+        margin-bottom: 3px;
+      }
+
+      .store-stock {
+        font-size: 12px;
+      }
+
+      .modal-title {
+        font-size: 14px;
+      }
+
+      .modal-subtitle {
+        font-size: 11px;
+      }
+
+      .summary-label {
+        font-size: 10px;
+      }
+
+      .summary-value {
+        font-size: 18px;
+      }
+    }
+
     .store-item.has-stock .store-stock {
       color: #059669;
     }
