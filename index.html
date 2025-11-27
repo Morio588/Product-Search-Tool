@@ -361,16 +361,21 @@
 
     .store-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(7, 1fr);
       gap: 12px;
     }
 
     .store-item {
-      padding: 14px 16px;
+      padding: 16px 12px;
       border-radius: 10px;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
       transition: all 0.2s ease;
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     .store-item:hover {
@@ -397,15 +402,17 @@
     }
 
     .store-name {
-      font-size: 13px;
+      font-size: 16px;
       color: #475569;
-      margin-bottom: 6px;
-      font-weight: 600;
+      margin-bottom: 8px;
+      font-weight: 700;
+      text-align: center;
     }
 
     .store-stock {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
+      text-align: center;
     }
 
     .store-item.has-stock .store-stock {
@@ -2137,15 +2144,16 @@
         // 生成門市清單
         const storeListHtml = [];
         
-        // 按店別代碼排序
-        const sortedStores = Object.keys(storeInfo).sort((a, b) => {
-          // 特殊處理：總倉、線上等特殊店別排在最後
-          if (parseInt(a) >= 800) return 1;
-          if (parseInt(b) >= 800) return -1;
-          return parseInt(a) - parseInt(b);
-        });
+        // 按指定順序排列店別
+        const storeOrder = [
+          '880', '820', '821', '830',
+          '45', '47', '48', '51', '57', '61', '65',
+          '75', '76', '77', '81', '84',
+          '86', '88', '89', '97',
+          '115', '116', '117'
+        ];
         
-        sortedStores.forEach(storeId => {
+        storeOrder.forEach(storeId => {
           const storeName = storeInfo[storeId];
           const stock = productInventory.stores?.[storeId] || 0;
           
@@ -2160,7 +2168,7 @@
           
           storeListHtml.push(`
             <div class="${itemClass}">
-              <div class="store-name">${storeId} - ${storeName}</div>
+              <div class="store-name">${storeId}</div>
               <div class="store-stock">${stock === 0 ? '缺貨' : stock}</div>
             </div>
           `);
