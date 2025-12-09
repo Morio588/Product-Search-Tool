@@ -2427,10 +2427,17 @@
         if (storeFilter === 'all') {
           // 檢查每個門市
           for (const [storeId, storeStock] of Object.entries(product.stores || {})) {
-            const ratio = storeStock / totalStock;
+            // 計算可轉調庫存 = 總庫存 - 門市庫存
+            const transferableStock = totalStock - storeStock;
             
-            // 庫存為 0 時，比例也是 0，也算低庫存
-            if (ratio < threshold) {
+            // 可轉調數量必須 >= 1 才有意義
+            if (transferableStock < 1) continue;
+            
+            // 可轉調比例 = 可轉調庫存 / 總庫存
+            const transferableRatio = transferableStock / totalStock;
+            
+            // 判斷：可轉調比例 >= 閾值時才顯示
+            if (transferableRatio >= threshold) {
               lowStockItems.push({
                 storeId: storeId,
                 storeName: storeInfo[storeId] || storeId,
@@ -2440,17 +2447,26 @@
                 name: productData[columnMapping['product_name']] || '',
                 totalStock: totalStock,
                 storeStock: storeStock,
-                ratio: ratio
+                transferableStock: transferableStock,
+                transferableRatio: transferableRatio
               });
             }
           }
         } else {
           // 特定門市
           const storeStock = product.stores?.[storeFilter] || 0;
-          const ratio = storeStock / totalStock;
           
-          // 庫存為 0 時，比例也是 0，也算低庫存
-          if (ratio < threshold) {
+          // 計算可轉調庫存 = 總庫存 - 門市庫存
+          const transferableStock = totalStock - storeStock;
+          
+          // 可轉調數量必須 >= 1 才有意義
+          if (transferableStock < 1) continue;
+          
+          // 可轉調比例 = 可轉調庫存 / 總庫存
+          const transferableRatio = transferableStock / totalStock;
+          
+          // 判斷：可轉調比例 >= 閾值時才顯示
+          if (transferableRatio >= threshold) {
             lowStockItems.push({
               storeId: storeFilter,
               storeName: storeInfo[storeFilter] || storeFilter,
@@ -2460,7 +2476,8 @@
               name: productData[columnMapping['product_name']] || '',
               totalStock: totalStock,
               storeStock: storeStock,
-              ratio: ratio
+              transferableStock: transferableStock,
+              transferableRatio: transferableRatio
             });
           }
         }
@@ -2514,17 +2531,20 @@
       items.forEach(item => {
         const tr = document.createElement('tr');
         
-        const ratioPercent = (item.ratio * 100).toFixed(1);
+        const ratioPercent = (item.transferableRatio * 100).toFixed(1);
         let ratioClass = 'ratio-caution';
         
-        if (item.ratio < 0.02) {
-          ratioClass = 'ratio-critical'; // < 2%
-        } else if (item.ratio < 0.05) {
-          ratioClass = 'ratio-warning';  // 2% - 5%
+        if (item.transferableRatio >= 0.10) {
+          ratioClass = 'ratio-critical'; // >= 10% 可轉調（嚴重缺貨）
+        } else if (item.transferableRatio >= 0.05) {
+          ratioClass = 'ratio-warning';  // >= 5% 可轉調（警告）
         }
         
         // 庫存為 0 時顯示「缺貨」
         const stockDisplay = item.storeStock === 0 ? '<span style="color: #dc2626; font-weight: 700;">缺貨</span>' : item.storeStock;
+        
+        // 可轉調數量顯示（整數）
+        const transferableDisplay = Math.floor(item.transferableStock);
         
         tr.innerHTML = `
           <td>${item.category}</td>
