@@ -2409,20 +2409,11 @@
       for (const [code, product] of Object.entries(inventoryData)) {
         const totalStock = product.total || 0;
         
-        // 最低保留 = 19 台（每家門市 1 台）
-        const minReserve = 19;
+        // 總庫存 < 19 台，不顯示（連每店 1 台都不夠）
+        if (totalStock < 19) continue;
         
-        // 如果總庫存 <= 19，則無法轉調
-        if (totalStock <= minReserve) continue;
-        
-        // 可轉庫存 = 總庫存 - 19
-        const transferableStock = totalStock - minReserve;
-        
-        // 可轉調比例 = 可轉庫存 / 總庫存
-        const transferableRatio = transferableStock / totalStock;
-        
-        // 如果可轉調比例 < 閾值，就不顯示（表示庫存充足，不需要特別關注）
-        if (transferableRatio < threshold) continue;
+        // 計算單店標準庫存 = 總庫存 × 閾值%
+        const standardStock = totalStock * threshold;
         
         // 找出對應的產品資料（從 data.csv）
         const productData = originalData.find(row => row[columnMapping['Code']] === code);
@@ -2438,10 +2429,13 @@
         
         // 如果選擇全部門市
         if (storeFilter === 'all') {
-          // 檢查每個門市，找出庫存為 0 或缺貨的
+          // 檢查每個門市
           for (const [storeId, storeStock] of Object.entries(product.stores || {})) {
-            // 只顯示庫存為 0 或很低的門市
-            if (storeStock === 0) {
+            // 判斷：單店庫存 < 標準庫存 時顯示
+            if (storeStock < standardStock) {
+              // 計算達成率 = 單店庫存 / 標準庫存
+              const achievementRatio = storeStock / standardStock;
+              
               lowStockItems.push({
                 storeId: storeId,
                 storeName: storeInfo[storeId] || storeId,
@@ -2451,8 +2445,8 @@
                 name: productData[columnMapping['product_name']] || '',
                 totalStock: totalStock,
                 storeStock: storeStock,
-                transferableStock: transferableStock,
-                transferableRatio: transferableRatio
+                standardStock: standardStock,
+                achievementRatio: achievementRatio
               });
             }
           }
@@ -2460,8 +2454,11 @@
           // 特定門市
           const storeStock = product.stores?.[storeFilter] || 0;
           
-          // 只顯示庫存為 0 的
-          if (storeStock === 0) {
+          // 判斷：單店庫存 < 標準庫存 時顯示
+          if (storeStock < standardStock) {
+            // 計算達成率 = 單店庫存 / 標準庫存
+            const achievementRatio = storeStock / standardStock;
+            
             lowStockItems.push({
               storeId: storeFilter,
               storeName: storeInfo[storeFilter] || storeFilter,
@@ -2471,8 +2468,8 @@
               name: productData[columnMapping['product_name']] || '',
               totalStock: totalStock,
               storeStock: storeStock,
-              transferableStock: transferableStock,
-              transferableRatio: transferableRatio
+              standardStock: standardStock,
+              achievementRatio: achievementRatio
             });
           }
         }
@@ -2526,19 +2523,22 @@
       items.forEach(item => {
         const tr = document.createElement('tr');
         
-        // 顯示可轉調比例（百分比）
-        const ratioPercent = (item.transferableRatio * 100).toFixed(1);
+        // 顯示達成率（百分比）
+        const ratioPercent = (item.achievementRatio * 100).toFixed(1);
         let ratioClass = 'ratio-caution';
         
-        // 根據可轉調比例決定顏色
-        if (item.transferableRatio >= 0.50) {
-          ratioClass = 'ratio-critical'; // >= 50%（庫存很充足，可大量轉調）
-        } else if (item.transferableRatio >= 0.30) {
-          ratioClass = 'ratio-warning';  // >= 30%（庫存充足）
+        // 根據達成率決定顏色
+        if (item.achievementRatio === 0) {
+          ratioClass = 'ratio-critical'; // 0%（缺貨）
+        } else if (item.achievementRatio < 0.50) {
+          ratioClass = 'ratio-warning';  // < 50%（嚴重不足）
         }
         
         // 庫存為 0 時顯示「缺貨」
         const stockDisplay = item.storeStock === 0 ? '<span style="color: #dc2626; font-weight: 700;">缺貨</span>' : item.storeStock;
+        
+        // 顯示標準庫存（應有庫存）
+        const standardDisplay = item.standardStock.toFixed(1);
         
         tr.innerHTML = `
           <td>${item.category}</td>
@@ -2547,7 +2547,10 @@
           <td>${item.name}</td>
           <td>${item.totalStock}</td>
           <td>${stockDisplay}</td>
-          <td><span class="lowstock-ratio ${ratioClass}">${ratioPercent}%</span></td>
+          <td>
+            <span class="lowstock-ratio ${ratioClass}">${ratioPercent}%</span>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">${item.storeStock} / ${standardDisplay} 台</div>
+          </td>
         `;
         
         tbody.appendChild(tr);
