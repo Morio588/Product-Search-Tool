@@ -2427,10 +2427,9 @@
         if (storeFilter === 'all') {
           // 檢查每個門市
           for (const [storeId, storeStock] of Object.entries(product.stores || {})) {
-            if (storeStock === 0) continue; // 庫存為 0 不顯示
-            
             const ratio = storeStock / totalStock;
             
+            // 庫存為 0 時，比例也是 0，也算低庫存
             if (ratio < threshold) {
               lowStockItems.push({
                 storeId: storeId,
@@ -2448,11 +2447,9 @@
         } else {
           // 特定門市
           const storeStock = product.stores?.[storeFilter] || 0;
-          
-          if (storeStock === 0) continue; // 庫存為 0 不顯示
-          
           const ratio = storeStock / totalStock;
           
+          // 庫存為 0 時，比例也是 0，也算低庫存
           if (ratio < threshold) {
             lowStockItems.push({
               storeId: storeFilter,
@@ -2526,13 +2523,16 @@
           ratioClass = 'ratio-warning';  // 2% - 5%
         }
         
+        // 庫存為 0 時顯示「缺貨」
+        const stockDisplay = item.storeStock === 0 ? '<span style="color: #dc2626; font-weight: 700;">缺貨</span>' : item.storeStock;
+        
         tr.innerHTML = `
           <td>${item.category}</td>
           <td>${item.model}</td>
           <td>${item.code}</td>
           <td>${item.name}</td>
           <td>${item.totalStock}</td>
-          <td>${item.storeStock}</td>
+          <td>${stockDisplay}</td>
           <td><span class="lowstock-ratio ${ratioClass}">${ratioPercent}%</span></td>
         `;
         
