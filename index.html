@@ -2433,8 +2433,11 @@
             // 可轉調數量必須 >= 1 才有意義
             if (transferableStock < 1) continue;
             
-            // 可轉調比例 = 可轉調庫存 / 總庫存
-            const transferableRatio = transferableStock / totalStock;
+            // 平均每店應有庫存 = 總庫存 / 19（19個一般門市）
+            const averagePerStore = totalStock / 19;
+            
+            // 可轉調比例 = 可轉調庫存 / 平均每店應有庫存
+            const transferableRatio = transferableStock / averagePerStore;
             
             // 判斷：可轉調比例 >= 閾值時才顯示
             if (transferableRatio >= threshold) {
@@ -2448,7 +2451,8 @@
                 totalStock: totalStock,
                 storeStock: storeStock,
                 transferableStock: transferableStock,
-                transferableRatio: transferableRatio
+                transferableRatio: transferableRatio,
+                averagePerStore: averagePerStore
               });
             }
           }
@@ -2462,8 +2466,11 @@
           // 可轉調數量必須 >= 1 才有意義
           if (transferableStock < 1) continue;
           
-          // 可轉調比例 = 可轉調庫存 / 總庫存
-          const transferableRatio = transferableStock / totalStock;
+          // 平均每店應有庫存 = 總庫存 / 19（19個一般門市）
+          const averagePerStore = totalStock / 19;
+          
+          // 可轉調比例 = 可轉調庫存 / 平均每店應有庫存
+          const transferableRatio = transferableStock / averagePerStore;
           
           // 判斷：可轉調比例 >= 閾值時才顯示
           if (transferableRatio >= threshold) {
@@ -2477,7 +2484,8 @@
               totalStock: totalStock,
               storeStock: storeStock,
               transferableStock: transferableStock,
-              transferableRatio: transferableRatio
+              transferableRatio: transferableRatio,
+              averagePerStore: averagePerStore
             });
           }
         }
