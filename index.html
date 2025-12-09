@@ -643,6 +643,45 @@
       transform: translateY(0);
     }
 
+    .lowstock-quick-filters {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .quick-filter-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e3a8a;
+    }
+
+    .lowstock-category-btn {
+      padding: 10px 20px;
+      background: white;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      color: #475569;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .lowstock-category-btn:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .lowstock-category-btn.active {
+      background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+      border-color: #3b82f6;
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
     .lowstock-summary {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1619,8 +1658,8 @@
       <div id="lowstockPage" class="page">
         <div class="lowstock-container">
           <div class="lowstock-header">
-            <h2 class="lowstock-title">📊 低庫存警報</h2>
-            <p class="lowstock-subtitle">即時監控各門市低庫存商品</p>
+            <h2 class="lowstock-title">🚨 低庫存警報</h2>
+            <p class="lowstock-subtitle">即時轉貨 把握銷售</p>
           </div>
 
           <div class="lowstock-controls">
@@ -1645,6 +1684,15 @@
               </svg>
               重新整理
             </button>
+          </div>
+
+          <div class="lowstock-quick-filters">
+            <div class="quick-filter-label">大分類：</div>
+            <button class="lowstock-category-btn active" data-category="all">全部</button>
+            <button class="lowstock-category-btn" data-category="CPU">CPU</button>
+            <button class="lowstock-category-btn" data-category="iPad">iPad</button>
+            <button class="lowstock-category-btn" data-category="iPhone">iPhone</button>
+            <button class="lowstock-category-btn" data-category="Apple Watch">Apple Watch</button>
           </div>
 
           <div class="lowstock-summary" id="lowstockSummary">
@@ -2290,7 +2338,25 @@
     }
 
     // 🆕 低庫存警報功能
+    let activeLowStockCategory = 'all'; // 當前選擇的大分類
+
     function initializeLowStockAlert() {
+      // 🆕 權限檢查：只有有庫存權限的使用者才能使用
+      if (!hasInventoryPermission) {
+        console.log('⚠️ 此帳號無庫存查看權限，無法使用低庫存警報');
+        const lowstockContainer = document.querySelector('.lowstock-container');
+        if (lowstockContainer) {
+          lowstockContainer.innerHTML = `
+            <div class="lowstock-empty">
+              <div class="empty-icon">🔒</div>
+              <div class="empty-title">無權限查看</div>
+              <div class="empty-description">您的帳號無庫存查看權限</div>
+            </div>
+          `;
+        }
+        return;
+      }
+
       // 初始化門市選單
       const storeSelector = document.getElementById('lowstockStoreFilter');
       if (storeSelector && Object.keys(storeInfo).length > 0) {
@@ -2299,12 +2365,32 @@
         // 按店別代碼排序
         const sortedStores = Object.keys(storeInfo).sort((a, b) => parseInt(a) - parseInt(b));
         
-        sortedStores.forEach(storeId => {
+        // 🆕 根據使用者角色決定可選擇的門市
+        if (userRole === 'store_75') {
+          // store_75 只能選擇店別 75
           const option = document.createElement('option');
-          option.value = storeId;
-          option.textContent = `${storeId} - ${storeInfo[storeId]}`;
+          option.value = '75';
+          option.textContent = `75 - ${storeInfo['75']}`;
+          option.selected = true;
           storeSelector.appendChild(option);
-        });
+          storeSelector.disabled = true; // 禁用選擇
+        } else if (userRole === 'store_77') {
+          // store_77 只能選擇店別 77
+          const option = document.createElement('option');
+          option.value = '77';
+          option.textContent = `77 - ${storeInfo['77']}`;
+          option.selected = true;
+          storeSelector.appendChild(option);
+          storeSelector.disabled = true; // 禁用選擇
+        } else {
+          // administrator 和 manager 可以選擇所有門市
+          sortedStores.forEach(storeId => {
+            const option = document.createElement('option');
+            option.value = storeId;
+            option.textContent = `${storeId} - ${storeInfo[storeId]}`;
+            storeSelector.appendChild(option);
+          });
+        }
       }
       
       // 載入低庫存資料
@@ -2315,7 +2401,7 @@
       const storeFilter = document.getElementById('lowstockStoreFilter').value;
       const threshold = parseFloat(document.getElementById('lowstockThreshold').value);
       
-      console.log(`🔄 載入低庫存資料：門市=${storeFilter}, 閾值=${threshold * 100}%`);
+      console.log(`🔄 載入低庫存資料：門市=${storeFilter}, 閾值=${threshold * 100}%, 分類=${activeLowStockCategory}`);
       
       const lowStockItems = [];
       
@@ -2333,6 +2419,9 @@
         
         // 只處理指定的四大分類
         if (!['CPU', 'iPad', 'iPhone', 'Apple Watch'].includes(category)) continue;
+        
+        // 🆕 大分類篩選
+        if (activeLowStockCategory !== 'all' && category !== activeLowStockCategory) continue;
         
         // 如果選擇全部門市
         if (storeFilter === 'all') {
@@ -2920,6 +3009,25 @@
           }
         });
       }
+
+      // 🆕 大分類快速篩選按鈕
+      document.querySelectorAll('.lowstock-category-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const category = this.getAttribute('data-category');
+          
+          // 移除其他按鈕的 active
+          document.querySelectorAll('.lowstock-category-btn').forEach(b => {
+            b.classList.remove('active');
+          });
+          
+          // 設定當前按鈕為 active
+          this.classList.add('active');
+          
+          // 更新篩選並重新載入資料
+          activeLowStockCategory = category;
+          loadLowStockData();
+        });
+      });
     }
 
     // 🆕 設為全域函式，供 Firebase 登入後呼叫
