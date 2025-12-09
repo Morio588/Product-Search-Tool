@@ -1671,7 +1671,7 @@
             </div>
 
             <div class="control-group">
-              <label for="lowstockThreshold">庫存可轉調比例：</label>
+              <label for="lowstockThreshold">安全庫存比例：</label>
               <select id="lowstockThreshold" class="lowstock-select">
                 <option value="0.05">5%</option>
                 <option value="0.10">10%</option>
@@ -1729,7 +1729,7 @@
                   <th>產品名稱</th>
                   <th>總庫存</th>
                   <th>庫存</th>
-                  <th>可轉調比例</th>
+                  <th>安全庫存率</th>
                 </tr>
               </thead>
               <tbody id="lowstockTableBody">
@@ -2537,7 +2537,7 @@
         // 庫存為 0 時顯示「缺貨」
         const stockDisplay = item.storeStock === 0 ? '<span style="color: #dc2626; font-weight: 700;">缺貨</span>' : item.storeStock;
         
-        // 顯示標準庫存（應有庫存）
+        // 顯示標準庫存（安全庫存量）
         const standardDisplay = item.standardStock.toFixed(1);
         
         tr.innerHTML = `
@@ -2549,7 +2549,12 @@
           <td>${stockDisplay}</td>
           <td>
             <span class="lowstock-ratio ${ratioClass}">${ratioPercent}%</span>
-            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">${item.storeStock} / ${standardDisplay} 台</div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 2px;">
+              ${item.storeStock} / ${standardDisplay} 台
+            </div>
+            <div style="font-size: 9px; color: #94a3b8; margin-top: 1px; font-style: italic;">
+              (現有庫存 / 安全庫存量)
+            </div>
           </td>
         `;
         
