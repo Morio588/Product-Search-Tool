@@ -631,7 +631,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-left: auto;
     }
 
     .lowstock-btn:hover {
@@ -2819,11 +2818,10 @@
       const link = document.createElement('a');
       const url = URL.createObjectURL(blob);
       
-      // 產生檔名（包含日期時間）
+      // 產生檔名（只包含日期）
       const now = new Date();
       const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
-      const timeStr = now.toTimeString().slice(0, 8).replace(/:/g, '');
-      const fileName = `低庫存警報_${dateStr}_${timeStr}.csv`;
+      const fileName = `低庫存警報_${dateStr}.csv`;
       
       link.setAttribute('href', url);
       link.setAttribute('download', fileName);
