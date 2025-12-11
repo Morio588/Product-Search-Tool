@@ -2739,18 +2739,57 @@
           }
         }
         
-        // 排序：庫存由高到低
-        suggestedStores.sort((a, b) => b.stock - a.stock);
+        // 🆕 優先級排序：880, 820, 821 優先，其餘按庫存由高到低
+        const priorityStores = ['880', '820', '821'];
+        suggestedStores.sort((a, b) => {
+          const aPriority = priorityStores.indexOf(a.id);
+          const bPriority = priorityStores.indexOf(b.id);
+          
+          // 如果都是優先門市，按優先級排序
+          if (aPriority !== -1 && bPriority !== -1) {
+            return aPriority - bPriority;
+          }
+          // 如果 a 是優先門市，a 排前面
+          if (aPriority !== -1) return -1;
+          // 如果 b 是優先門市，b 排前面
+          if (bPriority !== -1) return 1;
+          // 都不是優先門市，按庫存由高到低排序
+          return b.stock - a.stock;
+        });
         
-        // 建立建議轉貨門市顯示內容
+        // 🆕 建立建議轉貨門市顯示內容（最多顯示5家，其餘可展開）
         let suggestedStoresHtml = '';
         if (suggestedStores.length > 0) {
-          suggestedStoresHtml = suggestedStores.map(store => 
+          const visibleStores = suggestedStores.slice(0, 5);
+          const hiddenStores = suggestedStores.slice(5);
+          
+          // 顯示前5家
+          suggestedStoresHtml = visibleStores.map(store => 
             `<div style="display: inline-block; margin: 2px 4px; padding: 4px 8px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 6px; font-size: 11px;">
               <span style="font-weight: 600; color: #166534;">${store.id}</span>
               <span style="color: #16a34a; margin-left: 4px;">(${store.stock})</span>
             </div>`
           ).join('');
+          
+          // 如果有超過5家，添加展開按鈕
+          if (hiddenStores.length > 0) {
+            const hiddenStoresHtml = hiddenStores.map(store => 
+              `<div style="display: inline-block; margin: 2px 4px; padding: 4px 8px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 6px; font-size: 11px;">
+                <span style="font-weight: 600; color: #166534;">${store.id}</span>
+                <span style="color: #16a34a; margin-left: 4px;">(${store.stock})</span>
+              </div>`
+            ).join('');
+            
+            const uniqueId = 'stores-' + item.code + '-' + item.storeId;
+            suggestedStoresHtml += `
+              <button class="expand-stores-btn" data-target="${uniqueId}" style="display: inline-block; margin: 2px 4px; padding: 4px 8px; background: #dbeafe; border: 1px solid #60a5fa; border-radius: 6px; font-size: 11px; color: #1e40af; cursor: pointer; font-weight: 600;">
+                +${hiddenStores.length} 更多
+              </button>
+              <div id="${uniqueId}" style="display: none;">
+                ${hiddenStoresHtml}
+              </div>
+            `;
+          }
         } else {
           suggestedStoresHtml = '<span style="color: #94a3b8; font-size: 11px;">無可轉貨門市</span>';
         }
@@ -2789,6 +2828,29 @@
             });
           });
         }
+      });
+      
+      // 🆕 為展開按鈕添加事件監聽器
+      document.querySelectorAll('.expand-stores-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const targetId = this.getAttribute('data-target');
+          const targetDiv = document.getElementById(targetId);
+          
+          if (targetDiv.style.display === 'none') {
+            targetDiv.style.display = 'inline';
+            this.textContent = '收起';
+            this.style.background = '#fee2e2';
+            this.style.borderColor = '#fca5a5';
+            this.style.color = '#dc2626';
+          } else {
+            targetDiv.style.display = 'none';
+            const hiddenCount = targetDiv.querySelectorAll('div').length;
+            this.textContent = `+${hiddenCount} 更多`;
+            this.style.background = '#dbeafe';
+            this.style.borderColor = '#60a5fa';
+            this.style.color = '#1e40af';
+          }
+        });
       });
     }
 
