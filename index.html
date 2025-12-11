@@ -796,6 +796,18 @@
       font-weight: 400 !important;
     }
 
+    .lowstock-stock-cell.clickable {
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+    }
+
+    .lowstock-stock-cell.clickable:hover {
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      color: #1e40af;
+      transform: scale(1.05);
+    }
+
     .lowstock-ratio {
       display: inline-block;
       padding: 4px 12px;
@@ -1828,7 +1840,7 @@
             </div>
 
             <div class="control-group">
-              <label for="lowstockThreshold">安全庫存比例：</label>
+              <label for="lowstockThreshold">庫存配置比例：</label>
               <select id="lowstockThreshold" class="lowstock-select">
                 <option value="0.05">5%</option>
                 <option value="0.10">10%</option>
@@ -1895,12 +1907,13 @@
                   <th>產品名稱</th>
                   <th>總庫存</th>
                   <th>庫存</th>
-                  <th>安全庫存率<br><span style="font-size: 11px; font-weight: 400;">(現有庫存 / 安全庫存量)</span></th>
+                  <th>庫存配置達成率<br><span style="font-size: 11px; font-weight: 400;">(現有庫存 / 最低庫存配置量)</span></th>
+                  <th>建議轉貨門市</th>
                 </tr>
               </thead>
               <tbody id="lowstockTableBody">
                 <tr>
-                  <td colspan="7" class="loading">
+                  <td colspan="8" class="loading">
                     <div class="spinner"></div>
                     載入中...
                   </td>
@@ -2703,25 +2716,79 @@
         // 庫存為 0 時顯示「缺貨」
         const stockDisplay = item.storeStock === 0 ? '<span style="color: #dc2626; font-weight: 700;">缺貨</span>' : item.storeStock;
         
-        // 顯示標準庫存（安全庫存量）
+        // 顯示標準庫存（最低庫存配置量）
         const standardDisplay = item.standardStock.toFixed(1);
+        
+        // 🆕 計算建議轉貨門市
+        const suggestedStores = [];
+        const productInventory = inventoryData[item.code];
+        
+        if (productInventory && productInventory.stores) {
+          // 遍歷所有門市，找出庫存 > 該門市的最低庫存配置量的門市
+          for (const [storeId, storeStock] of Object.entries(productInventory.stores)) {
+            // 計算該門市的最低庫存配置量
+            const storeStandardStock = item.totalStock * parseFloat(document.getElementById('lowstockThreshold').value);
+            
+            // 如果該門市庫存 > 最低庫存配置量，且不是當前缺貨的門市
+            if (storeStock > storeStandardStock && storeId !== item.storeId) {
+              suggestedStores.push({
+                id: storeId,
+                stock: storeStock
+              });
+            }
+          }
+        }
+        
+        // 排序：庫存由高到低
+        suggestedStores.sort((a, b) => b.stock - a.stock);
+        
+        // 建立建議轉貨門市顯示內容
+        let suggestedStoresHtml = '';
+        if (suggestedStores.length > 0) {
+          suggestedStoresHtml = suggestedStores.map(store => 
+            `<div style="display: inline-block; margin: 2px 4px; padding: 4px 8px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 6px; font-size: 11px;">
+              <span style="font-weight: 600; color: #166534;">${store.id}</span>
+              <span style="color: #16a34a; margin-left: 4px;">(${store.stock})</span>
+            </div>`
+          ).join('');
+        } else {
+          suggestedStoresHtml = '<span style="color: #94a3b8; font-size: 11px;">無可轉貨門市</span>';
+        }
+        
+        // 🆕 判斷是否為 administrator 或 manager（可以點擊查看詳細庫存）
+        const canViewDetails = (userRole === 'administrator' || userRole === 'manager');
+        const stockCellClass = canViewDetails ? 'lowstock-stock-cell clickable' : 'lowstock-stock-cell';
         
         tr.innerHTML = `
           <td class="lowstock-category">${item.category}</td>
           <td class="lowstock-model">${item.model}</td>
           <td class="lowstock-code">${item.code}</td>
           <td>${item.name}</td>
-          <td>${item.totalStock}</td>
-          <td>${stockDisplay}</td>
+          <td class="${stockCellClass}" data-code="${item.code}">${item.totalStock}</td>
+          <td class="${stockCellClass}" data-code="${item.code}">${stockDisplay}</td>
           <td>
             <span class="lowstock-ratio ${ratioClass}">${ratioPercent}%</span>
             <div style="font-size: 10px; color: #64748b; margin-top: 2px;">
               ${item.storeStock} / ${standardDisplay} 台
             </div>
           </td>
+          <td style="padding: 8px;">${suggestedStoresHtml}</td>
         `;
         
         tbody.appendChild(tr);
+        
+        // 🆕 為 administrator 和 manager 添加點擊事件
+        if (canViewDetails) {
+          const stockCells = tr.querySelectorAll('.lowstock-stock-cell.clickable');
+          const productData = originalData.find(row => row[columnMapping['Code']] === item.code);
+          
+          stockCells.forEach(cell => {
+            cell.addEventListener('click', function() {
+              const productCode = this.getAttribute('data-code');
+              showInventoryModal(productCode, productData);
+            });
+          });
+        }
       });
     }
 
@@ -2794,7 +2861,7 @@
       let csvContent = '\uFEFF'; // UTF-8 BOM
       
       // CSV 標題
-      csvContent += '門市,門市名稱,大分類,型號,Code,產品名稱,總庫存,現有庫存,安全庫存量,安全庫存率\n';
+      csvContent += '門市,門市名稱,大分類,型號,Code,產品名稱,總庫存,現有庫存,最低庫存配置量,庫存配置達成率\n';
       
       // CSV 資料
       lowStockItems.forEach(item => {
